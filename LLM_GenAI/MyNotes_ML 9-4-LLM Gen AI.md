@@ -2,13 +2,13 @@
     Large Language Models and Gen AI
 </h1>
 
-## Machine Learning
+<h2 align="center">
+    Machine Learning Self-study
+</h2>
 
-### Self-study
+# 1 LLM Inference Call
 
-#### LLM Inference Call
-
-**Role**  
+## 1.1 Role  
 To send an input to LLMs we need to determine role and content. Possible defined roles are:
 - HumanMessage: To interact with the model
 - AIMessage: A message from the model
@@ -16,16 +16,16 @@ To send an input to LLMs we need to determine role and content. Possible defined
 - FunctionMessage
 - ToolMessage
 
-**Temperature**  
+## 1.2 Temperature  
 When loading the model we can determine how much the outputs are close to deterministic while even with temperature=0 it will not be completely deterministic.
 
-### Fine-tuning
+# 2 Fine-tuning
 
 To fine-tune a LLM we can take two approaches:
 1. Supervised learning
 2. Reinforcement learning
 
-#### Supervised Fine-tuning
+## 2.1 Supervised Fine-tuning
 
 In this method, we can have multiple variations based on how we are going to update the model parameters. 
 
@@ -36,11 +36,12 @@ In this method, we can have multiple variations based on how we are going to upd
 ![](1.png)
 
 
-### LangChain
+# 3 LangChain
 
-#### LLM Model
+## 3.1 LLM Model
 
-**Chain**  
+## 3.2 Chain
+
 It is a sequence of calls between objects in the LangChain. One can call directly the function `LLMChain` or use the pipe symbol to concatenate a sequence of instances (functions) in a chain.
 ```python
 from langchain_core.output_parsers import StrOutputParser
@@ -50,8 +51,9 @@ output_parser= StrOutputParser()
 review_chain = review_template | llm | output_parser
 ```
 
-**Chat Model**  
-**Retrieval-Augment Generation (RAG)**  
+## 3.3 Chat Model
+
+# 4 Retrieval-Augment Generation (RAG)
 It is used for cases when the LLM model is trained with a general-purpose dataset and we want to use it on a domain-specific use case. Without proper fine-tuning, the results are shallow. Additionally, fine-tuning is an expensive task to run frequently to keep the model up-to-date. Alternatively, we use the RAG method to retrieve from domain-related references.
 
 1. The first step of the RAG method is the ingestion process. We store embeddings of document corpus in some storage to query later. The storage can be a vector database (VDBMS) where retrieving methods such as ANN are already implemented.
@@ -59,16 +61,16 @@ It is used for cases when the LLM model is trained with a general-purpose datase
 3. The third step is to engineer prompts with system prompts and using LLM we generate responses.
 ![](3.png)
 
-**Embedding**  
+## 4.1 Embedding
 To embed text data and vectorize them, there are many alternatives. One example is Sentence BERT (SBERT) models. It consists of two BERT models and the last layer compares the embeddings of sentences A and B. 
 ![](4.png)
 
-**Retrieval**  
+## 4.2 Retrieval  
 In large datasets, after vectorizing the document chunks and code snippets, etc., we can store them. For retrieval, we use nearest neighbor methods such as ANN (approximate nearest neighbors) or HNSW (Hierarchical Navigable Small World). The retrieved item could be a document chunk and we may need to add preceding sections or if there was a hyperlink providing the material in the hyperlink. This requires some engineering after retrieval.
 
 There are several realizations of these vector embeddings such as Chroma, FAISS, Lance, OpenSearch, ElasticSearch, MongoDB, etc.
 
-**Implement a Chatbot using RAG on AWS**:
+## 4.3 Implement a Chatbot using RAG on AWS
 We can load the model using SageMaker. We store the endpoint after loading the model. So it is possible to deploy an endpoint model on the cloud and interact with it using APIs.
 We specify processing GPU as well when deploying. We can use LangChain (`SagemakerEndpoint`) to set up the model with a specific input-output format and give the model endpoint to it.
 Without RAG setup, one can create `LLMChain` and run it with a query and get the answer.
@@ -78,7 +80,7 @@ Next, we embed documents optionally using available ones on HuggingFace.
 One option for storage is FAISS which is very simple. We can set the database as a retriever to retrieve relevant items.
 LangChain has a `RetrievalQA` method where we can use it to get prompts and retrieve from the database and generate answers using an LLM.
 
-### Knowledge Graph
+# 5 Knowledge Graph
 
 One approach to store data for retrieval is the knowledge graph. This has applications in RAG as well. In short, every node is a data record and edges represent relations. Using conventional methods such as vector embedding, one can apply cosine similarity to find relevant documents. While using a knowledge graph gives more freedom in searching for relevant chunks of the document. Nodes can have labels to group them. Relationships have types.
 
@@ -87,10 +89,10 @@ For example, we can define two vertices: Person “Andreas” Person “Andrew�
 In another example, we look into person-movie relations. While every person and a movie has a set of properties they can have relationships as below:
 ![](6.png)
 
-**Neo4j**  
+## 5.1 Neo4j  
 Neo4j is a package that we can create knowledge graphs and query the database. It uses its own query language similar to SQL which is called Cypher. See MyCodes for examples.
 
-#### Knowledge Graph for RAG
+## 5.2 Knowledge Graph for RAG
 
 A knowledge graph can be used to store and index chunks of data to later retrieve similar items in a RAG use case. Below is an approach that one can take:
 1. Split sections into chunks using a LangChain text splitter:
@@ -114,7 +116,7 @@ Now by defining other types of nodes we can describe relations:
 ![](8.png)
 In the example above, each chunk is part of a form, so it makes sense to create relations as above.
 
-#### How Relationship Works
+**How Relationship Works**
 One use case is to use NEXT relationships to identify a window of context meaning the chunks that are sequentially related. So we can say when a similar chunk is identified, pick up all related chunks in a window of size “1” (i.e., the next chunk) and pass that to LLM (using the retriever module) to create an answer. See example Cypher below:
 
 ```cypher
@@ -151,7 +153,7 @@ kg.query(cypher params={
 By adding more properties, we enable creating more relevant queries:
 ![](9.png)
 
-#### LLM Generating Cyphers
+## 5.3 LLM Generating Cyphers
 GPT-3.5 and above are doing a fairly good job in creating Cyphers. We can provide the knowledge graph schema and with proper prompts, LLMs are able to create Cyphers and execute.
 
 LangChain provides a function that we can directly feed the Cypher in a QA and generate results for a chatbot:
