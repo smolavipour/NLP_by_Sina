@@ -31,7 +31,7 @@ Consider a dictionary (of size for instance 10k words). It is typical to have 30
 - **T5**: It contains an encoder decoder stack similar to the Transformer model and it uses bi-directional context. It is capable of multi-task such as both predicting the rate of a movie based on a review and answer a question and get an answer. It performs this by receiving a text as the indicator of the task.
 
 # 4 Recurrent Neural Network
-In this model, the parameters from input to the hidden units are called $w_ax$, while the parameters from hidden units of one step to next one is denoted by $w_aa$, and finally from hidden layer to output is shown with $w_ya$. 
+In this model, the parameters from input to the hidden units are called $w_{ax}$, while the parameters from hidden units of one step to next one is denoted by $w_{aa}$, and finally from hidden layer to output is shown with $w_{ya}$. 
 ![](images/1.png)
 
 ## 4.1 Forward Propagation
@@ -44,7 +44,7 @@ y^{[t]=g(w_ya  a^{[t]}+b_y)
 
 Usually the activation function tanh() is used and sometimes ReLU.
 
-To simplify the notation, we can concatenate w_aa and w_ax and refer to it as $w_a$. Then by stacking a^{[t-1]} and X^{[t]} we can rewrite:
+To simplify the notation, we can concatenate $w_{aa}$ and $w_{ax}$ and refer to it as $w_a$. Then by stacking $a^{[t-1]}$ and $X^{[t]}$ we can rewrite:
 ```math
 a^{[t]}=g(w_a  [a^{[t-1]}│X^{[1]} ]+b_a )
 y^{[t]}=g(w_y  a^{[t]}+b_y)
