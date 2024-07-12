@@ -29,3 +29,25 @@ Consider a dictionary (of size for instance 10k words). It is typical to have 30
 - **GPT**: It contains only a decoder and using that it predicts the next word. Originally it is uni-directional and it uses causal attention mask.
 - **BERT**: It contains only encoder block and it uses bi-directional context. It is trained on two tasks, multi-mask language modeling and next sentence prediction which is binary decision for every query.
 - **T5**: It contains an encoder decoder stack similar to the Transformer model and it uses bi-directional context. It is capable of multi-task such as both predicting the rate of a movie based on a review and answer a question and get an answer. It performs this by receiving a text as the indicator of the task.
+
+# 4 Recurrent Neural Network
+In this model, the parameters from input to the hidden units are called $w_ax$, while the parameters from hidden units of one step to next one is denoted by $w_aa$, and finally from hidden layer to output is shown with $w_ya$. 
+![](images/1.png)
+
+## 4.1 Forward Propagation
+Consider the RNN structure above. The forward propagation is described as below:
+$$
+a^{[0]}=0
+a^{[t]}=g(w_aa  a^{[t-1]} + w_ax  X^{[1]}+b_a )
+y^{[t]=g(w_ya  a^{[t]}+b_y)
+$$
+
+Usually the activation function tanh() is used and sometimes ReLU.
+
+To simplify the notation, we can concatenate w_aa and w_ax and refer to it as $w_a$. Then by stacking a^{[t-1]} and X^{[t]} we can rewrite:
+$$
+a^{[t]}=g(w_a  [a^{[t-1]}│X^{[1]} ]+b_a )
+y^{[t]}=g(w_y  a^{[t]}+b_y)
+$$
+
+
