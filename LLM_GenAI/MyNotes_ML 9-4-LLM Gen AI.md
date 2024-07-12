@@ -81,3 +81,38 @@ A knowledge graph can be used to store and index chunks of data to later retriev
 1. Split sections into chunks using a LangChain text splitter:
 ```python
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+```
+This helps create chunks of text with possible overlaps.
+
+2. Create a graph where each chunk is a node adding chunk metadata as properties.
+
+3. Create a vector index.
+
+4. Calculate text embeddings for each chunk and populate the index.
+
+5. Perform a similarity search.
+
+To use the full power of knowledge graphs, we can add additional nodes describing relations. If we create nodes only using chunks it looks like the figure below:
+<image>
+
+Now by defining other types of nodes we can describe relations:
+<image>
+In the example above, each chunk is part of a form, so it makes sense to create relations as above.
+
+#### How Relationship Works
+One use case is to use NEXT relationships to identify a window of context meaning the chunks that are sequentially related. So we can say when a similar chunk is identified, pick up all related chunks in a window of size “1” (i.e., the next chunk) and pass that to LLM (using the retriever module) to create an answer. See example Cypher below:
+
+```cypher
+retrieval_query_window = """
+MATCH window=
+    (:Chunk)-[:NEXT*0..1]->(node)-[:NEXT*0..1]->(:Chunk)
+WITH node score window as longestWindow 
+  ORDER BY length(window) DESC LIMIT 1
+WITH nodes(longestWindow) as chunkList node score
+  UNWIND chunkList as chunkRows
+WITH collect(chunkRows.text) as textList node score
+RETURN apoc.text.join(textList " \n ") as text
+    score
+    node {.source} AS metadata
+"""
+```
