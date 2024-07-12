@@ -1,1 +1,5 @@
 # NLP_by_Sina
+
+This repository contains my notes and codes from my self study and courses in Coursera and Deeplearning.AI projects. 
+
+-  [LLM and generateive AI](LLM_GenAI/MyNotes_ML%209-4-LLM%20Gen%20AI.md)
