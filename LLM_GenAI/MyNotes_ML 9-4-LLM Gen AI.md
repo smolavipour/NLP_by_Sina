@@ -116,3 +116,34 @@ RETURN apoc.text.join(textList " \n ") as text
     node {.source} AS metadata
 """
 ```
+
+The relationships become important when we want to make the LLM not generate hallucinations. For example, detailed information about numbers or relations can be embedded in node relations and when querying the knowledge graph we make sure that it picks up the relations and accordingly correct information. See example Cypher below where we create a text using all the relationships and info to be provided to the LLM:
+```cypher
+cypher = """
+    MATCH (:Chunk {chunkId: $chunkIdParam})-[:PART_OF]->(f:Form)
+        (com:Company)-[:FILED]->(f)
+        (mgr:Manager)-[owns:OWNS_STOCK_IN]->(com)
+    RETURN mgr.managerName + " owns " + owns.shares + 
+        " shares of " + com.companyName + 
+        " at a value of $" + 
+        apoc.number.format(toInteger(owns.value)) AS text
+    LIMIT 10
+    """
+kg.query(cypher params={
+    'chunkIdParam': ref_chunk_id
+})
+```
+By adding more properties, we enable creating more relevant queries:
+
+#### LLM Generating Cyphers
+GPT-3.5 and above are doing a fairly good job in creating Cyphers. We can provide the knowledge graph schema and with proper prompts, LLMs are able to create Cyphers and execute.
+
+LangChain provides a function that we can directly feed the Cypher in a QA and generate results for a chatbot:
+```python
+cypherChain = GraphCypherQAChain.from_llm(
+    ChatOpenAI(temperature=0)
+    graph=kg
+    verbose=True
+    cypher_prompt=CYPHER_GENERATION_PROMPT
+)
+```
