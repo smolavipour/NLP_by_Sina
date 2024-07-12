@@ -1,9 +1,6 @@
-<div class="container">
-    <h1>Welcome to My Website</h1>
-    <p>This is a simple container to hold content.</p>
+<div class="container"; style="text-align: center;">
+    <h1>Large Language Models and Gen AI</h1>
 </div>
-
-# Large Language Models and Gen AI
 
 ## Machine Learning
 
