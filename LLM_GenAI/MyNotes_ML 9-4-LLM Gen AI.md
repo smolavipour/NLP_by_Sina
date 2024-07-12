@@ -1,6 +1,7 @@
-<center>
+<p align="center">
     Large Language Models and Gen AI
-</center>
+</p>
+
 ## Machine Learning
 
 ### Self-study
