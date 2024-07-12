@@ -1,3 +1,7 @@
+<p align="center">
+<img src="logo.png" alt="Alt text" width="100"/>
+</p>
+
 <h1 align="center">
     Large Language Models and Gen AI
 </h1>
