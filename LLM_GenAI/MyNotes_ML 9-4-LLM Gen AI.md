@@ -1,5 +1,5 @@
 <center>
-    <h1>Large Language Models and Gen AI</h1>
+    Large Language Models and Gen AI
 </center>
 ## Machine Learning
 
