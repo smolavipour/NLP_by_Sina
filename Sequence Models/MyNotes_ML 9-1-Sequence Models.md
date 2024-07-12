@@ -37,9 +37,11 @@ In this model, the parameters from input to the hidden units are called $w_{ax}$
 ## 4.1 Forward Propagation
 Consider the RNN structure above. The forward propagation is described as below:
 ```math
-a^{[0]}=0
-a^{[t]}=g(w_{aa}  a^{[t-1]} + w_{ax}  X^{[1]}+b_a)
-
+\begin{align}
+	a^{[0]}=0\\
+	a^{[t]}=g(w_{aa}  a^{[t-1]} + w_{ax}  X^{[1]}+b_a)\\
+	y^{[t]}=g(w_{ya}  a^{[t]}+b_y)
+\end{align}
 ```
 
 Usually the activation function tanh() is used and sometimes ReLU.
