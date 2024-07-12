@@ -20,7 +20,7 @@
 - Name entity recognition
   
 # 2 Notations
-Consider a sentence as a sequence. We denote $X^{(i)<t>}$ to the $t$-th element of the $i$-uth sample, and we denote $T_X$ as the length of the input. 
+Consider a sentence as a sequence. We denote $X^{(i)&lt;t&gt;}$ to the $t$-th element of the $i$-uth sample, and we denote $T_X$ as the length of the input. 
 Consider a dictionary (of size for instance 10k words). It is typical to have 30-40k size dictionary. So one way of representing words is using one-hot encoding which requires a vector of size 10k in our example.
 # 3 Models developed for NLP
 - **CBOW** (Continuous Bag of Word): The goal is to extract word embeddings. For every sequence, we take a fixed window as the context around each word. We build a vocabulary from all words and the representation for each word is one-hot encoding. Then we feed this representation in feed forward neural network to predict the central word’s embedding. This has a significant limitation which is the fixed length of the model. So recurrent models are suggested.
