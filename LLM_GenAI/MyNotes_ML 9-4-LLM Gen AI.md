@@ -1,7 +1,4 @@
-<div class="container"; style="text-align: center;">
-    <h1>Large Language Models and Gen AI</h1>
-</div>
-
+<h1 style="text-align: center;">Large Language Models and Gen AI</h1>
 ## Machine Learning
 
 ### Self-study
