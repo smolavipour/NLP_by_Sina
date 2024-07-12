@@ -31,6 +31,8 @@ In this method, we can have multiple variations based on how we are going to upd
 - **Transfer learning**: Keep part of the model intact and change some layers only.
 - **Parameter Efficient Fine-tuning (PEFT)**: In this method, all parameters of the base model are fixed and only a few parameters are augmented to the model and they are trained.
 - **Low Rank Adaptation (LoRA)**: It is similar to PEFT while the augmented parameters are represented by multiplication of two vectors to have a lower number of parameters. The number of augmented parameters is controlled by a parameter called intrinsic rank of the model.
+![](1.png)
+
 
 ### LangChain
 
