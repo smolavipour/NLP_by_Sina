@@ -1,4 +1,6 @@
-<h1 style="text-align: center;">Large Language Models and Gen AI</h1>
+<center>
+    <h1>Large Language Models and Gen AI</h1>
+</center>
 ## Machine Learning
 
 ### Self-study
