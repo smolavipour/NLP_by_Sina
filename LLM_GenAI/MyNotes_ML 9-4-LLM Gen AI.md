@@ -33,6 +33,7 @@ In this method, we can have multiple variations based on how we are going to upd
 - **Transfer learning**: Keep part of the model intact and change some layers only.
 - **Parameter Efficient Fine-tuning (PEFT)**: In this method, all parameters of the base model are fixed and only a few parameters are augmented to the model and they are trained.
 - **Low Rank Adaptation (LoRA)**: It is similar to PEFT while the augmented parameters are represented by multiplication of two vectors to have a lower number of parameters. The number of augmented parameters is controlled by a parameter called intrinsic rank of the model.
+  
 ![](1.png)
 
 
@@ -59,10 +60,12 @@ It is used for cases when the LLM model is trained with a general-purpose datase
 1. The first step of the RAG method is the ingestion process. We store embeddings of document corpus in some storage to query later. The storage can be a vector database (VDBMS) where retrieving methods such as ANN are already implemented.
 2. Given a query, we embed the model and apply a semantic search or any other retrieval mechanism on the stored data and retrieve some related documents.
 3. The third step is to engineer prompts with system prompts and using LLM we generate responses.
+   
 ![](3.png)
 
 ## 4.1 Embedding
 To embed text data and vectorize them, there are many alternatives. One example is Sentence BERT (SBERT) models. It consists of two BERT models and the last layer compares the embeddings of sentences A and B. 
+
 ![](4.png)
 
 ## 4.2 Retrieval  
@@ -87,6 +90,7 @@ One approach to store data for retrieval is the knowledge graph. This has applic
 For example, we can define two vertices: Person “Andreas” Person “Andrew” and an edge knows “since 2024”. We can represent that using (Person)-[knows]->(Person). This is an introduction to the Neo4j library which exists in LangChain.
 
 In another example, we look into person-movie relations. While every person and a movie has a set of properties they can have relationships as below:
+
 ![](6.png)
 
 ## 5.1 Neo4j  
@@ -110,10 +114,13 @@ This helps create chunks of text with possible overlaps.
 5. Perform a similarity search.
 
 To use the full power of knowledge graphs, we can add additional nodes describing relations. If we create nodes only using chunks it looks like the figure below:
+
 ![](7.png)
 
 Now by defining other types of nodes we can describe relations:
+
 ![](8.png)
+
 In the example above, each chunk is part of a form, so it makes sense to create relations as above.
 
 **How Relationship Works**
@@ -151,6 +158,7 @@ kg.query(cypher params={
 })
 ```
 By adding more properties, we enable creating more relevant queries:
+
 ![](9.png)
 
 ## 5.3 LLM Generating Cyphers
