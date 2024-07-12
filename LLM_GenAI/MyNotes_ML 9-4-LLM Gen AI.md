@@ -1,6 +1,6 @@
-<p align="center">
+<h1 align="center">
     Large Language Models and Gen AI
-</p>
+</h1>
 
 ## Machine Learning
 
