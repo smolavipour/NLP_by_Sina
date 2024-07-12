@@ -49,7 +49,7 @@ Usually the activation function tanh() is used and sometimes ReLU.
 To simplify the notation, we can concatenate $w_{aa}$ and $w_{ax}$ and refer to it as $w_a$. Then by stacking $a^{[t-1]}$ and $X^{[t]}$ we can rewrite:
 ```math
 \begin{align}
-	&a^{[t]}=g(w_a  [a^{[t-1]}│X^{[1]} ]+b_a )
+	&a^{[t]}=g(w_a  [a^{[t-1]}│X^{[1]} ]+b_a )\\
 	&y^{[t]}=g(w_y  a^{[t]}+b_y)
 \end{align}
 ```
