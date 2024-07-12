@@ -1,4 +1,7 @@
-![](logo.png)
+<p align="center">
+<img src="logo.png" alt="Alt text" width="500"/>
+</p>
+
 # NLP_by_Sinmo
 
 This repository contains my notes and codes from my self study and courses in Coursera and Deeplearning.AI projects. 
