@@ -1,5 +1,5 @@
 <p align="center">
-<img src="logo.png" alt="Alt text" width="500"/>
+<img src="logo.png" alt="Alt text" width="100"/>
 </p>
 
 # NLP_by_Sinmo
