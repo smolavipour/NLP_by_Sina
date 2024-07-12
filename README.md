@@ -1,3 +1,4 @@
+[](logo.png)
 # NLP_by_Sinmo
 
 This repository contains my notes and codes from my self study and courses in Coursera and Deeplearning.AI projects. 
