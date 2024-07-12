@@ -1,9 +1,7 @@
-```html
 <div class="container">
     <h1>Welcome to My Website</h1>
     <p>This is a simple container to hold content.</p>
 </div>
-```
 
 # Large Language Models and Gen AI
 
