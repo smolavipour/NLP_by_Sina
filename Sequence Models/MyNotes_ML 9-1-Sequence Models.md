@@ -38,6 +38,7 @@ In this model, the parameters from input to the hidden units are called $w_{ax}$
 Consider the RNN structure above. The forward propagation is described as below:
 ```math
 a^{[0]}=0
+a^{[t]}=g(w_{aa}  a^{[t-1]} + w_{ax}  X^{[1]}+b_a)
 
 ```
 
