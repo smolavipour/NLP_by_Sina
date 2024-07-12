@@ -34,7 +34,7 @@ In this method, we can have multiple variations based on how we are going to upd
 - **Parameter Efficient Fine-tuning (PEFT)**: In this method, all parameters of the base model are fixed and only a few parameters are augmented to the model and they are trained.
 - **Low Rank Adaptation (LoRA)**: It is similar to PEFT while the augmented parameters are represented by multiplication of two vectors to have a lower number of parameters. The number of augmented parameters is controlled by a parameter called intrinsic rank of the model.
   
-![](1.png)
+![](images/1.png)
 
 
 # 3 LangChain
@@ -61,12 +61,12 @@ It is used for cases when the LLM model is trained with a general-purpose datase
 2. Given a query, we embed the model and apply a semantic search or any other retrieval mechanism on the stored data and retrieve some related documents.
 3. The third step is to engineer prompts with system prompts and using LLM we generate responses.
    
-![](3.png)
+![](images/3.png)
 
 ## 4.1 Embedding
 To embed text data and vectorize them, there are many alternatives. One example is Sentence BERT (SBERT) models. It consists of two BERT models and the last layer compares the embeddings of sentences A and B. 
 
-![](4.png)
+![](images/4.png)
 
 ## 4.2 Retrieval  
 In large datasets, after vectorizing the document chunks and code snippets, etc., we can store them. For retrieval, we use nearest neighbor methods such as ANN (approximate nearest neighbors) or HNSW (Hierarchical Navigable Small World). The retrieved item could be a document chunk and we may need to add preceding sections or if there was a hyperlink providing the material in the hyperlink. This requires some engineering after retrieval.
@@ -91,7 +91,7 @@ For example, we can define two vertices: Person “Andreas” Person “Andrew�
 
 In another example, we look into person-movie relations. While every person and a movie has a set of properties they can have relationships as below:
 
-![](6.png)
+![](images/6.png)
 
 ## 5.1 Neo4j  
 Neo4j is a package that we can create knowledge graphs and query the database. It uses its own query language similar to SQL which is called Cypher. See MyCodes for examples.
@@ -115,11 +115,11 @@ This helps create chunks of text with possible overlaps.
 
 To use the full power of knowledge graphs, we can add additional nodes describing relations. If we create nodes only using chunks it looks like the figure below:
 
-![](7.png)
+![](images/7.png)
 
 Now by defining other types of nodes we can describe relations:
 
-![](8.png)
+![](images/8.png)
 
 In the example above, each chunk is part of a form, so it makes sense to create relations as above.
 
@@ -159,7 +159,7 @@ kg.query(cypher params={
 ```
 By adding more properties, we enable creating more relevant queries:
 
-![](9.png)
+![](images/9.png)
 
 ## 5.3 LLM Generating Cyphers
 GPT-3.5 and above are doing a fairly good job in creating Cyphers. We can provide the knowledge graph schema and with proper prompts, LLMs are able to create Cyphers and execute.
