@@ -1,3 +1,10 @@
+```html
+<div class="container">
+    <h1>Welcome to My Website</h1>
+    <p>This is a simple container to hold content.</p>
+</div>
+```
+
 # Large Language Models and Gen AI
 
 ## Machine Learning
@@ -40,6 +47,13 @@ In this method, we can have multiple variations based on how we are going to upd
 
 **Chain**  
 It is a sequence of calls between objects in the LangChain. One can call directly the function `LLMChain` or use the pipe symbol to concatenate a sequence of instances (functions) in a chain.
+```python
+from langchain_core.output_parsers import StrOutputParser
+
+output_parser= StrOutputParser()
+
+review_chain = review_template | llm | output_parser
+```
 
 **Chat Model**  
 **Retrieval-Augment Generation (RAG)**  
@@ -48,9 +62,11 @@ It is used for cases when the LLM model is trained with a general-purpose datase
 1. The first step of the RAG method is the ingestion process. We store embeddings of document corpus in some storage to query later. The storage can be a vector database (VDBMS) where retrieving methods such as ANN are already implemented.
 2. Given a query, we embed the model and apply a semantic search or any other retrieval mechanism on the stored data and retrieve some related documents.
 3. The third step is to engineer prompts with system prompts and using LLM we generate responses.
+![](3.png)
 
 **Embedding**  
 To embed text data and vectorize them, there are many alternatives. One example is Sentence BERT (SBERT) models. It consists of two BERT models and the last layer compares the embeddings of sentences A and B. 
+![](4.png)
 
 **Retrieval**  
 In large datasets, after vectorizing the document chunks and code snippets, etc., we can store them. For retrieval, we use nearest neighbor methods such as ANN (approximate nearest neighbors) or HNSW (Hierarchical Navigable Small World). The retrieved item could be a document chunk and we may need to add preceding sections or if there was a hyperlink providing the material in the hyperlink. This requires some engineering after retrieval.
@@ -58,13 +74,14 @@ In large datasets, after vectorizing the document chunks and code snippets, etc.
 There are several realizations of these vector embeddings such as Chroma, FAISS, Lance, OpenSearch, ElasticSearch, MongoDB, etc.
 
 **Implement a Chatbot using RAG on AWS**:
-- We can load the model using SageMaker. We store the endpoint after loading the model. So it is possible to deploy an endpoint model on the cloud and interact with it using APIs.
-- We specify processing GPU as well when deploying. We can use LangChain (`SagemakerEndpoint`) to set up the model with a specific input-output format and give the model endpoint to it.
-- Without RAG setup, one can create `LLMChain` and run it with a query and get the answer.
-- AWS has options like Textract and Splitter to read and chunk the reference documents in PDF format.
-- Next, we embed documents optionally using available ones on HuggingFace.
-- One option for storage is FAISS which is very simple. We can set the database as a retriever to retrieve relevant items.
-- LangChain has a `RetrievalQA` method where we can use it to get prompts and retrieve from the database and generate answers using an LLM.
+We can load the model using SageMaker. We store the endpoint after loading the model. So it is possible to deploy an endpoint model on the cloud and interact with it using APIs.
+We specify processing GPU as well when deploying. We can use LangChain (`SagemakerEndpoint`) to set up the model with a specific input-output format and give the model endpoint to it.
+Without RAG setup, one can create `LLMChain` and run it with a query and get the answer.
+
+AWS has options like Textract and Splitter to read and chunk the reference documents in PDF format.
+Next, we embed documents optionally using available ones on HuggingFace.
+One option for storage is FAISS which is very simple. We can set the database as a retriever to retrieve relevant items.
+LangChain has a `RetrievalQA` method where we can use it to get prompts and retrieve from the database and generate answers using an LLM.
 
 ### Knowledge Graph
 
@@ -73,6 +90,7 @@ One approach to store data for retrieval is the knowledge graph. This has applic
 For example, we can define two vertices: Person “Andreas” Person “Andrew” and an edge knows “since 2024”. We can represent that using (Person)-[knows]->(Person). This is an introduction to the Neo4j library which exists in LangChain.
 
 In another example, we look into person-movie relations. While every person and a movie has a set of properties they can have relationships as below:
+![](6.png)
 
 **Neo4j**  
 Neo4j is a package that we can create knowledge graphs and query the database. It uses its own query language similar to SQL which is called Cypher. See MyCodes for examples.
@@ -95,10 +113,10 @@ This helps create chunks of text with possible overlaps.
 5. Perform a similarity search.
 
 To use the full power of knowledge graphs, we can add additional nodes describing relations. If we create nodes only using chunks it looks like the figure below:
-<image>
+![](7.png)
 
 Now by defining other types of nodes we can describe relations:
-<image>
+![](8.png)
 In the example above, each chunk is part of a form, so it makes sense to create relations as above.
 
 #### How Relationship Works
@@ -136,6 +154,7 @@ kg.query(cypher params={
 })
 ```
 By adding more properties, we enable creating more relevant queries:
+![](9.png)
 
 #### LLM Generating Cyphers
 GPT-3.5 and above are doing a fairly good job in creating Cyphers. We can provide the knowledge graph schema and with proper prompts, LLMs are able to create Cyphers and execute.
