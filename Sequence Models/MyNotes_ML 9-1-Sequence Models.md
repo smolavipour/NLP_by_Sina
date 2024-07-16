@@ -276,7 +276,7 @@ One main problem of this model is that although input and output may have differ
 One main difference of this model with random generation model is that we do not want the output translation be different every time a same input comes in. So in the decoding part, what we need is to take most probable translation. 
 ```math
 \begin{align}
-\arg⁡max_{y^{\&lt 1\&gt},…,y^{\&lt T_y\&gt}}⁡ p(y^{\&lt 1\&gt},…,y^{\&lt T_y\&gt} |x)
+\arg⁡max_{y^{&lt 1 &gt},…,y^{&lt T_y &gt}}⁡ p(y^{&lt 1 &gt},…,y^{&lt T_y &gt} |x)
 \end{align}
 ```
 
