@@ -306,5 +306,37 @@ The algorithm repeats the optimization above for some choices of $T_y$ and among
 
 **Beam Search error**
 
-Suppose we have made a translation using Beam search and an RNN. Consider a sentence being translated by human to be $y^{\*}$ and the generated translation by the model to be $\hat{y}$ which is not a very accurate translation. To understand the source of error we can compute $P(\hat{y}|x)$ and $P(y^{\*} |x)$ and compare them (To do this, one computes the likelihood of each word when fixing the input). Two cases may occur:
+Suppose we have made a translation using Beam search and an RNN. Consider a sentence being translated by human to be $y^{\*}$, and the generated translation by the model to be $\hat{y}$ which is not a very accurate translation. 
+To understand the source of error we can compute $P(\hat{y}|x)$ and $P(y^{\*} |x)$ and compare them (To do this, one computes the likelihood of each word when fixing the input). Two cases may occur:
 
+
+- $P(\hat{y}│x)>P(y^{\*} |x)$: then RNN is not accurate.
+
+We do this comparison for a set of examples to draw a conclusion.
+
+**BLEU Score (Bilingual evaluation understudy)**
+
+In a translation task, there could be several valid translations. To score the translation we may use BLEU metric. If we look into each word (unigram) in the machine translation, we have:
+- **Precision** for a word: # of times that appear in references, over the # of words in the machine translation
+- **Modified Precision** for a word: Maximum # of times that appear in references (count_clip), over the # of words in the machine translation (count)
+Similarly, we can define the metrics above for a combination of two words (bigram). Now let us define Bleu score on m-grams:
+```math
+\begin{align}
+P_m=\log⁡ \frac{\sum_{m_{gram} \in \hat{y}} count_{clip}(m_{gram})}{\sum_{m_{gram}\in \hat{y}} count(m_{gram})}
+\end{align}
+```
+Then we can define combined bleu score and compute precision scores as:
+```math
+\begin{align}
+P=BP \exp⁡ \frac{1}{M} \sum_{m=1:M} P_m
+\end{align}
+```
+
+Where BP is a coefficient as brevity penalty to penalize short translations:
+```math
+\begin{align}
+BP=min ⁡(1,e^{1-\frac{ref}{cand}})
+\end{align}
+```
+
+And `ref` and `cand` are number of words in the reference and candidate translation. BLEU score is a precision score.
