@@ -388,7 +388,7 @@ Same as previous, the outputs y are generated until `<EoS>` appears. The dashed 
 Attention weight $α^(<t,t^'>)$ is defined as the amount of attention $y^{&lt t &gt}$ should pay to $a^{&lt t' &gt}$ and is computed as:
 ```math
 \begin{align}
-\alpha^{&lt t,t' &gt}=\exp⁡ \frac{e^{&lt t,t' &gt}}{\sum_{\tau=1}^{T_x} e^{&lt t,\tau &gt}}
+\alpha^{&lt t,t' &gt}=\exp⁡ \frac{e^{&lt t,t' &gt}}{\sum_{\tau=1}^{T_x} }
 \end{align}
 ```
 
