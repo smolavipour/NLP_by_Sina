@@ -455,7 +455,7 @@ A transformer block consists of an attention layer and a one feedforward hidden 
 Consider inputs $x_1 \dot x_N$ each vector of dimension d. The attention layer at core is a linear combination of $x_i$ s. Then with attention matrix $A$ the outputs are $Z=A^T X$. The limitation for $A\in R^{N×N}$ is that the rows of $A^T$ are normalized having values in $[0,1]$ and sum to 1. The matrix is not fixed size as the input length N can vary. We can perform the normalization row-wise using softmax function, so:
 $Z=softmax(B)$, $X=A^T X$
 
-Looking at element $a_ij$ of the attention matrix, we refer to the output $z_i$ as query and the $x_j$ as the key. In self-attention, we want to know how much each words are contributing in the context to their own. So it makes sense to construct matrix $B$ using $\frac{1}{\sqrt{d} XX^T}. However, this gives a high bias towards diagonal.
+Looking at element $a_{ij}$ of the attention matrix, we refer to the output $z_i$ as query and the $x_j$ as the key. In self-attention, we want to know how much each words are contributing in the context to their own. So it makes sense to construct matrix $B$ using $\frac{1}{\sqrt{d} XX^T}. However, this gives a high bias towards diagonal.
 
 ![image](https://github.com/user-attachments/assets/552d3b81-ee35-4931-999e-bcd0ea88e1d4)
 
