@@ -262,6 +262,21 @@ For the intrinsically biased words, such as male and female, we set the distance
 ![image](https://github.com/user-attachments/assets/29e3942e-d6bf-4738-bdd1-57670a468a33)
 
 # 8 LSTM for classification
+In case we want to use LSTM for classification, one first problem is that the length of words could be different. Then we can use padding to make all the lengths the same.
+![image](https://github.com/user-attachments/assets/8372f22d-e7ce-496c-8a5c-ed5bad7ae5be)
 
+# 9 Sequence to Sequence Model (seq2seq)
+## 9.1 Text translation
+The input goes into an RNN/LSTM and the output is a vector. Then the vector is treated as the input to another RNN/LSTM to generate a sequence. The model was first proposed by Google in 2014. By using LSTM or GRU we overcome the vanishing/exploding gradient problems. In the encoding section, the input tokens are passed through an embedding layer first. The hidden state between encoder and decode captures the meaning of the sentence.
 
+![image](https://github.com/user-attachments/assets/38a3f1b9-ebbb-4de2-a0f8-0c882562e661)
+
+One main problem of this model is that although input and output may have different length, the size of hidden state is fixed and that forms a bottleneck for conveying the message from encoder to decoder. It is not possible to use all hidden states in the encoder due to memory issue as the input sequence becomes larger. The solution is **Attention models**.
+
+One main difference of this model with random generation model is that we do not want the output translation be different every time a same input comes in. So in the decoding part, what we need is to take most probable translation. 
+```math
+\begin{align}
+\arg\⁡max_{y^{\&lt 1\&gt},…,y^{\&lt T_y\&gt}}⁡ p(y^{\&lt 1\&gt},…,y^{\&lt T_y\&gt} |x)
+\end{align}
+```
 
