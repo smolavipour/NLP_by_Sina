@@ -148,11 +148,11 @@ Forget gate decides what information is keep or discarded. Input gate decides wh
 
 ## 4.8 Bidirectional RNN
 In the bidirectional RNN, each direction is completely independent of the other one. After the hidden state is computed, the final output would be computed using:
-$\hat{y}^{[t]}=g(W_y [{\overrightarrow{a}}^{[t]},{\overleftarrow{a}}^{[t]}]+b_y)$
+$\hat{y}^{[t]}=g(W_y [{\overrightarrow{a^{[t]}}},{\overleftarrow{a^{[t]}}}]+b_y)$
 
 ![](images/7.png)
 
-$a^([2]&lt3&gt)=g(W_a^[2]  [a^([2]&lt2&gt),a^([1]&lt3&gt) ]+b_a^[2] )$
+$a^{[2]&lt3&gt}=g(W_a^{2}  [a^{[2]&lt2&gt},a^{[1]&lt3&gt}]+b_a^{2} )$
 
 ## 4.9 Deep RNN
 Like deep NN, we can add more hidden layer to RNN/GRU/LSTM as well. Unlike deep RNN that may have many layers, deep RNNs have 2 3 layers and that is already a lot of parameters.
