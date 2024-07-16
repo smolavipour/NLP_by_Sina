@@ -280,3 +280,35 @@ One main difference of this model with random generation model is that we do not
 \end{align}
 ```
 
+We do not want to do a greedy approach to pick each word separately solely depending on the previously selected words. The reason is that in many occasions just by following the most probable word at each step, we may drift apart from the best possible translation of the whole sentence.
+
+**Beam Search Algorithm**
+
+Given the vector from encoding part, the algorithm 
+- computes $B$ most likely words as the first word for translation.
+- Next for each $B$ (beam width) word as $y^{&lt 1 &gt}$, we give it as input to the next block and compute the likelihoods of the outcome. Then we can compute the joint likelihood as $p(y^{&lt 1 &gt} |X)p(y^{&lt 2 &gt} |X,y^{&lt 1 &gt})$ for all words in the vocabulary and pick the top B combinations $y^{&lt 1 &gt} y^{&lt 2 &gt}$.
+- The algorithm continues to extract next words until it reaches `<EoS>`.
+
+There is a concern that the product of all these probabilities becomes very small. So it is recommended to use logarithm of probabilities and sum over them.
+It is recommended also to normalize the length with respect to $T_y$. In the algorithm there is a parameter α and the argmax is modified as:
+
+```math
+\begin{align}
+\arg⁡max⁡ \frac{1}{T_y^α}  \sum_{t=1}^{T_y} \log⁡ P(y^{&lt t &gt}│x,y^{&lt 1 &gt},…,y^{&lt t-1 &gt}) 
+\end{align}
+```
+
+The algorithm repeats the optimization above for some choices of $T_y$ and among all $B$ sequences for all $T_y$ choices, we pick the highest score and report as the output translation.
+
+- High $B$ results better results but slower ($B=10$ is a good choice for a product, $B=100$ or higher is good for research)
+- Unlike BFS and DFS, beam search is much faster but there is no guarantee to find exact match
+![image](https://github.com/user-attachments/assets/092ae08f-5c58-4d54-a80e-47548f16a28d)
+
+**Beam Search error**
+Suppose we have made a translation using Beam search and an RNN. Consider a sentence being translated by human to be $y^{\*}$ and the generated translation by the model to be  $\hat{y}$ which is not a very accurate translation. To understand the source of error we can compute P(\hat{y}|x) and $P(y^{\*} |x)$ and compare them (To do this, one computes the likelihood of each word when fixing the input). Two cases may occur:
+
+- $P(\hat{y}│x)<P(y^{\*} |x)$: then Beam search is failing and causing the error
+- $P(\hat{y}│x)>P(y^{\*} |x)$: then RNN is not accurate.
+
+We do this comparison for a set of examples to draw a conclusion.
+
