@@ -369,7 +369,7 @@ For short sentence translation the method above works fine. But as the length of
 But this is not optimal. To resolve it, we can use weights and give less weight to hidden states that are more important. In the attention model, we use decoder hidden state to predict the importance weights of the next step. 
 Consider the bidirectional LSTM/RNN model. In the first step, we want to extract features from forward and backward recurrences.
 
-Let us define the features $a^{&lt t' &gt}=({\overrightarrow{a^{&lt t' &gt}}, \overleftarrow{a}^{&lt t' &gt})$. 
+Let us define the features $a^{&lt t' &gt}=(\overrightarrow{a}^{&lt t' &gt}, \overleftarrow{a}^{&lt t' &gt})$. 
 Next, we can define a forward RNN as below where attention parameters $\alpha^{&lt i,j &gt} construct the context variable $C$, where:
 ```math
 \begin{align}
