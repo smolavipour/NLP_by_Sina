@@ -80,3 +80,38 @@ Consider that we are interested to train a model that gives a score to each sent
 Cats average 15 hours of sleep a day. &lt EOS &gt
 </p>
 
+We have $P(y^{[1]},y^{[2]},\dots,y^{[9]} )=P(y^{[1]} )P(y^{[2]}│y^{[1]} )…P(y^{[9]}│y^{[1]}…y^{[8]})$. Then we can compute each of these scores using the following model:
+
+![](images/4.png)
+
+It is also possible to design the model in character model. Then the dictionary would consist of characters and space and punctuations. 
+
+To generate a sample from our model, simply we begin with an input for instance 0, and generate the output and use that output as the input of the next step. We continue this until we reach to `<EoS>`.
+
+## 4.5 Vanishing/exploding Gradient Problem
+In language applications, we may need long term dependencies. For instance, consider the following example where early words influence on the last words.
+
+<p align="center">
+The cat which always ate …., was full.
+The cats which always ate …., were full.
+<\p>
+	
+So, it is hard in back propagation to capture this long term dependencies and we face vanishing gradient. 
+In some cases, when the derivatives become larger than 1, we may see exploding gradient and we need to address that by gradient clipping technique for instance. To address vanishing gradient, identity RNNs or skip connections are suggested. The best known approach to mitigate this is LSTM.
+
+One conclusion is that we need to some how store the memory!
+
+## 4.6 Gated Recurrent Unit
+GRU is introduced to address the memory issue of RNN. Below is a schema of each RNN unit:
+$a^{[t]}=tanh⁡(W_a [a^{[t-1]},x^{[t]}]+b_a)$
+
+Let us define the memory as $c^{[t]}$. In RNN, we consider $c^{[t]}=a^{[t]}$.
+For Gated Recurrent Unit (GRU), let us define a variable called candidate memory:
+$\tilde{c}^{[t]}=tanh⁡(W_c [c^{[t-1]},x^{[t]}]+b_c)$
+Then let us define the update gate function as:
+$$\Gamma_u=\sigma⁡(W_u [c^{[t-1]},x^{[t]}]+b_u)$$
+This gate somehow controls if we need to apply what we have stored in the memory or not. Like in the example above Gate tells us when it is important to care about was/were.
+Then we can define: 
+$c^{[t]}=\Gamma_u *c ̃{[t]}+ 〖(1-\Gamma_u) *c^{[t-1]}$
+The fill GRU has another gate (relevant gate) function $\Gamma_r$. So, the complete formulas become:
+
