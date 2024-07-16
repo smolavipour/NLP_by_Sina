@@ -156,3 +156,27 @@ $\hat{y}^{[t]}=g(W_y [\overrightarrow{a}^{[t]},\overleftarrow{a}^{[t]}]+b_y)$
 Like deep NN, we can add more hidden layer to RNN/GRU/LSTM as well. Unlike deep RNN that may have many layers, deep RNNs have 2 3 layers and that is already a lot of parameters.
 
 ![](images/8.png)
+
+# 5 Word Embedding
+Suppose we have a dictionary $V$ with 10k samples. The one-hot representation of words is that it is a vector of dimension 10k with all zeros except one at the index of the corresponding word. We denote it by $O_421$ as an example for 421th word.
+
+One way to do embedding is to use methods such as t-SNE. However, t-SNE is more to visualize the data in lower dimension. 
+
+There are several ways to learn word embeddings:
+- Have a large corpus of text 1-100 B words
+- Download pre-trained embeddings
+Then one can use transfer learning to a new task with smaller training set (100k words)
+
+In this area we deal with context. Context could be 4 words, or for example 4 left words and 4 right words, and we want to predict the next word or the word in the middle respectively.
+
+## 5.1 Analogy reasoning
+It answers to questions such: the relation between `Man->Woman` is similar to the relation between `King->`? And the model should give the answer “Queen”. The accuracy of the current models is around 30-75%.
+The conventional way is to compare the embedding vector using proper distance metrics. In t-SNE, due to non-linearities one should not expect to identify analogies, especially complicated parallel relationships as below:
+
+One typical distance metric is cosine similarity which is basically:
+$similarity=(u^T v)/(‖u‖_2  ‖v‖_2 )$
+
+![](images/9.png)
+
+This is much more used comparing to Euclidian distance.
+
