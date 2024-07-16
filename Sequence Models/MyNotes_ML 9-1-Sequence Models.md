@@ -233,9 +233,35 @@ The embedding layer in libraries is not a fixed lookup table, rather is trained 
 One famous use case of this category of problem is to understand the rating stars based on the review.
 ![image](https://github.com/user-attachments/assets/85a9ae72-b50c-416c-8bdd-c5c3bb8f2d37)
 
-
-So E is obtained using a large database 100B words beforehand.
+So $E$ is obtained using a large database 100B words beforehand.
 We can then take the average over the feature vectors e and pass it through a Softmax to predict the rating. So it does not matter to deal with a short or long review. There is a problem with the current model which is that a word NOT can change the whole context, so if we have so many “Good” words in the review the average feature vector of “good” dominates and we give it a five star while we missed the important “NOT” word. So it is suggested to use RNN sentiment analysis instead.
+
+![image](https://github.com/user-attachments/assets/bdb9f25b-29ba-46bb-b17f-3cdb544acd8a)
+
+# 7 De-biasing 
+There are biases in our society and accordingly in our corpse of text. This holds true in other applications as well when we need to keep a balance and de-bias our method. Let us look at this from word embedding perspective. So the first step is to identify the direction of bias.
+
+## 7.1 Identify the bias direction
+To learn about the direction of bias given the word embeddings, we can collect examples such as 
+```math
+\begin{align}
+e_{he}&-e_{she}
+e_{male}&-e_{female}
+e_{father}&-e_{mother}
+\end{align}
+```
+
+And take an average over these vectors to identify the direction of bias.
+In more complicated approaches, we can use PCA, t-SNE or SVD to extract eigen vectors and identify which one is related to the corresponding bias.
+
+## 7.2 Neutralize
+Some words are biased intrinsically: male, female, father, mother and words like doctor, nurse, leader should be neutralized. For the words that are not intrinsically biased, we project them on the space orthogonal to the identified bias vector.
+
+## 7.3 Equalize pairs
+For the intrinsically biased words, such as male and female, we set the distance between male and the orthogonal space equal to the distance between female and the orthogonal space.
+![image](https://github.com/user-attachments/assets/29e3942e-d6bf-4738-bdd1-57670a468a33)
+
+# 8 LSTM for classification
 
 
 
