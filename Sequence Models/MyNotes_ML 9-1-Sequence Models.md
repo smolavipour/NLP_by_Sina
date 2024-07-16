@@ -152,15 +152,15 @@ $\hat{y}^{[t]}=g(W_y [{\overrightarrow{a^{[t]}}},{\overleftarrow{a^{[t]}}}]+b_y)
 
 ![](images/7.png)
 
-$a^{[2]&lt3&gt}=g(W_a^{2}  [a^{[2]&lt2&gt},a^{[1]&lt3&gt}]+b_a^{2} )$
-
 ## 4.9 Deep RNN
 Like deep NN, we can add more hidden layer to RNN/GRU/LSTM as well. Unlike deep RNN that may have many layers, deep RNNs have 2 3 layers and that is already a lot of parameters.
 
 ![](images/8.png)
 
+$a^{[2]&lt3&gt}=g(W_a^{2}  [a^{[2]&lt2&gt},a^{[1]&lt3&gt}]+b_a^{2} )$
+
 # 5 Word Embedding
-Suppose we have a dictionary $V$ with 10k samples. The one-hot representation of words is that it is a vector of dimension 10k with all zeros except one at the index of the corresponding word. We denote it by $O_421$ as an example for 421th word.
+Suppose we have a dictionary $V$ with 10k samples. The one-hot representation of words is that it is a vector of dimension 10k with all zeros except one at the index of the corresponding word. We denote it by $O_{421}$ as an example for 421th word.
 
 One way to do embedding is to use methods such as t-SNE. However, t-SNE is more to visualize the data in lower dimension. 
 
@@ -176,7 +176,7 @@ It answers to questions such: the relation between `Man->Woman` is similar to th
 The conventional way is to compare the embedding vector using proper distance metrics. In t-SNE, due to non-linearities one should not expect to identify analogies, especially complicated parallel relationships as below:
 
 One typical distance metric is cosine similarity which is basically:
-$similarity=(u^T v)/(‖u‖_2  ‖v‖_2 )$
+$similarity={u^T v}/{\lvert\lvert u\rvert\rvert_2  \lvert\lvert v\rvert\rvert_2}$
 
 ![](images/9.png)
 
