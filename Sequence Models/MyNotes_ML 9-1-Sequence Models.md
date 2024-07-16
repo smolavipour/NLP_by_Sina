@@ -178,11 +178,64 @@ The conventional way is to compare the embedding vector using proper distance me
 One typical distance metric is cosine similarity which is basically:
 ```math
 \begin{equation}
-similarity={u^T v}/{\lvert\lvert u\rvert\rvert_2  \lvert\lvert v\rvert\rvert_2}$
+similarity=\frac{u^T v}{\lvert\lvert u\rvert\rvert_2  \lvert\lvert v\rvert\rvert_2}$
 \end{equation}
 ```
 
 ![](images/9.png)
 
 This is much more used comparing to Euclidian distance.
+
+## 5.2 Skip-gram (Word2Vec)
+Let $c$ be the context (one word in this case) and t to be the target word in our dictionary of 10k words. The idea is that the target word is not far than a few words distance to the context word. It is called skip-gram since we skip some words from the context to look for the target. The goal is to upon a given context word, generate a  $\hat{y}$ that is likely to be the target. By using the softmax we have:
+```math
+\begin{equation}
+p(t\lvert c)=\frac{e^{\Theta_t^T e_c}}{\sum_{j=1}^{10k} e^{\Theta_j^T e_c } }
+\end{equation}
+```
+
+Where $e_c=E o_c$, $E$ is the embedding matrix mapping each word in the vocab to a vector, and $o_c$ is the one-hot vector corresponding to word $c$. 
+
+**Problems**
+Skipgram is computationally heavy since every time we have to some over the dictionary (10k). There are techniques to overcome this issue. Instead we can train layers of binary classifier as hierarchy that tells if the prediction is in the first half or the second half of the vocab. So instead of linear complexity $o(d)$ we would have logarithmic complexity $o(log⁡d)$.
+
+Another thing to note is that words like **it**, **of**, **the**,… are very common and by uniformly sampling the context word in training, we may get biased training set. So we should take care of this as well.
+
+## 5.3 Negative Sampling
+Consider creating a dataset as following. Given a pair of words for example (“Orange”) and (“Juice”), we add k random words (negative examples) from dictionary (that probably it is not associated with these words). Then we assign a target value 1 to “Juice” and 0 to all other k samples. So we can train a model to tell if two words are close or not. $k$ is 2-5 for large datasets and 5-20 for smaller datasets.
+
+Now to use this as a predictive model for predicting a target word given a context, we can train 10k binary classifiers for each target word. However, since for each context word, we only have $k+1$ pairs (i.e., k+1 classifiers), we are not updating all classifiers at once. This is much cheaper than training one softmax model to classify 10k groups.
+
+**Problems**
+Similar to skip-gram, there is a problem of getting biased when sampling negative examples. So, a heuristic way to sample words is to consider the distribution
+```math
+\begin{equation}
+p(w_i)=\frac{f(w_i )^{3/4}}{\sum_{j=1}^{10k} f(w_i)^{3/4}}
+\end{equation}
+```
+where $f(w_i)$ is the frequency of the word in English corpse. Then we sample according to this.
+
+## 5.4 GLoVe Word Vectors
+GLoVe stands for Global Vectors for Word Representation. Let us define $X_ct$ be #times $t$ appears in the context of $c$. Typically we assume $X_ct=X_tc$.
+Let is define the loss function:
+```math
+\begin{equation}
+Minimize \sum_{i=1}^{10k}\sum_{j=1}^{10k} f(X_{ij}) (\Theta_i^T e_j+b_i+b_j-\log⁡ X_{ij})^2 〗  
+\end{equation}
+```
+Where $0\log⁡0=0$. 
+This method is fairly easy and much faster than previous methods.
+
+## 5.5 Embedding layer in libraries
+The embedding layer in libraries is not a fixed lookup table, rather is trained during the training phase. Let us assume the desired output dimension is 10. Then the model initializes a table of dimension 10 for each word. Then for 1000 words, the matrix is 1000×10. So to access the embedding for each word, we can multiply a one-hot vector to this matrix and extract the corresponding vector. So the differentiation engine can use this multiplication to take the gradient and compute the matrix. It is possible to load a pre-trained model such as word2vec or GLoVe if the vocabulary and output dimension matches. In practice though, for fast implementation, the computer is not multiplying matrices and only takes the corresponding row from the matrix.
+
+# 6 Sentiment Classification Problem
+One famous use case of this category of problem is to understand the rating stars based on the review.
+![image](https://github.com/user-attachments/assets/85a9ae72-b50c-416c-8bdd-c5c3bb8f2d37)
+
+
+So E is obtained using a large database 100B words beforehand.
+We can then take the average over the feature vectors e and pass it through a Softmax to predict the rating. So it does not matter to deal with a short or long review. There is a problem with the current model which is that a word NOT can change the whole context, so if we have so many “Good” words in the review the average feature vector of “good” dominates and we give it a five star while we missed the important “NOT” word. So it is suggested to use RNN sentiment analysis instead.
+
+
 
