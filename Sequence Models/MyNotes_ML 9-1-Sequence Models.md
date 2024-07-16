@@ -117,9 +117,9 @@ The fill GRU has another gate (relevant gate) function $\Gamma_r$. So, the compl
 
 ```math
 \begin{align}
-c^{[t]}=tanh⁡(W_c[\Gamma_r* c^{[t-1]},x^{[t]}]+b_c )
-\Gamma_u=\sigma⁡(W_u [c^{[t-1]},x^{[t]} ]+b_u )
-\Gamma_r=\sigma⁡(W_r [c^{[t-1]},x^{[t]} ]+b_r )
-c^{[t]}=\Gamma_u  *\tilde{c}^{[t]}+ (1-\Gamma_u) *c^{[t]}
+c^{[t]}&=tanh⁡(W_c[\Gamma_r* c^{[t-1]},x^{[t]}]+b_c )\\
+\Gamma_u&=\sigma⁡(W_u [c^{[t-1]},x^{[t]} ]+b_u )\\
+\Gamma_r&=\sigma⁡(W_r [c^{[t-1]},x^{[t]} ]+b_r )\\
+c^{[t]}&=\Gamma_u  *\tilde{c}^{[t]}+ (1-\Gamma_u) *c^{[t]}
 \end{align}
 ```
