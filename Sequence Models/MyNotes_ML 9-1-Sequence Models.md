@@ -123,3 +123,8 @@ c^{[t]}&=tanh⁡(W_c[\Gamma_r* c^{[t-1]},x^{[t]}]+b_c )\\
 c^{[t]}&=\Gamma_u  *\tilde{c}^{[t]}+ (1-\Gamma_u) *c^{[t]}
 \end{align}
 ```
+
+In academic literature, people may use the following literature:
+$\tilde{c}=\tilde{h}, \Gamma_u=u, \Gamma_r=r, c=h$
+
+
