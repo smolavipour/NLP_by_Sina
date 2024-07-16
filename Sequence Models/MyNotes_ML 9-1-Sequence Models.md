@@ -373,7 +373,7 @@ Let us define the features $a^{&lt t^{\'} &gt)=({\overrightarrow{a^{&lt t^{\'} &
 Next, we can define a forward RNN as below where attention parameters $\alpha^{&lt i,j &gt} construct the context variable $C$, where:
 ```math
 \begin{align}
-\sum_{t^{\'}} α^{&lt 1,t^{\'} &gt}=1\\
+\sum_{t'} α^{&lt 1,t^{\'} &gt}=1\\
 \alpha^{&lt 1,t^{\'} &gt} \geq 0\\
 C^{&lt 1&gt}=\sum_{t^{\'}} \alpha^{&lt 1,t^{\'} &gt} a^{&lt t^{\'} &gt}
 \end{align}
