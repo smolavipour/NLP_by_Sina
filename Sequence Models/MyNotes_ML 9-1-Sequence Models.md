@@ -418,7 +418,7 @@ In this method we keep B (Beam width) number of sequences and compute the probab
 In this method we create multiple candidate translations and to select one candidate among them, we use the following rule:
 ```math
 \begin{align}
-E^*=\argmax_{E\in{candidate set}}⁡ \frac{1}/{n} \sum_{E'\in{candidate set}} ROUGE(E,E')
+E^*=\arg max_{E\in{candidate set}}⁡ \frac{1}{n} \sum_{E'\in{candidate set}} ROUGE(E,E')
 \end{align}
 ```
 
