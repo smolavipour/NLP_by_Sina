@@ -77,6 +77,6 @@ To create a language model, we need a large corpus (text body) of text for train
 Consider that we are interested to train a model that gives a score to each sentence. For example, we want to give a score to the sentence:
 
 <p align="center">
-Cats average 15 hours of sleep a day. <EOS>
+Cats average 15 hours of sleep a day. &lt EOS &gt
 </p>
 
