@@ -717,9 +717,11 @@ The trick is to use local sensitivity hashing. In computing attention, we want t
 
 ## 17.2 Memory saving in back propagation (Reversible residual layer)
 In a simple transformer model, we have residual links that in backpropagation, we need to store the value to compute the backpropagation by subtracting them.
- 
+ ![image](https://github.com/user-attachments/assets/2cb0116b-5ad9-4b26-ac89-cafe3e85b6f6)
+
 Instead, we can compute the residuals again in backpropagation to mitigate the memory issue. The trick is the architecture below that at each iteration we update only one of the values in columns:
- 
+![image](https://github.com/user-attachments/assets/0385e244-bf9d-4712-b513-200cae7c4d15)
+
 ```math
 \begin{align}
 y_1&=x_1+Attention(x_2)\\
