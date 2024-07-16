@@ -307,7 +307,6 @@ The algorithm repeats the optimization above for some choices of $T_y$ and among
 **Beam Search error**
 
 Suppose we have made a translation using Beam search and an RNN. Consider a sentence being translated by human to be $y^{\*}$ and the generated translation by the model to be  $\hat{y}$ which is not a very accurate translation. To understand the source of error we can compute $P(\hat{y}|x)$ and $P(y^{\*} |x)$ and compare them (To do this, one computes the likelihood of each word when fixing the input). Two cases may occur:
-
 - $P(\hat{y}│x)<P(y^{\*} |x)$: then Beam search is failing and causing the error
 - $P(\hat{y}│x)>P(y^{\*} |x)$: then RNN is not accurate.
 
@@ -334,7 +333,7 @@ P=BP \exp⁡ \frac{1}{M} \sum_{m=1:M} P_m
 Where BP is a coefficient as brevity penalty to penalize short translations:
 ```math
 \begin{align}
-BP=min ⁡(1,e^{1-\frac{ref}/{cand}})
+BP=min ⁡(1,e^{1-\frac{ref}{cand}})
 \end{align}
 ```
 
