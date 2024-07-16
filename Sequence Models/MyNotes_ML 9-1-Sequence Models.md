@@ -73,10 +73,10 @@ In another example such as machine translation, the architecture could be:
 ![](images/3.png)
 
 ## 4.4 Language Model
-To create a language model, we need a large corpus (text body) of text for training. To give it more structure, in a sentence we call each word (also called token) as  $y^{[1]},y^{[2]},\dots,y^{[10]}$ and we can allocate the end of a sentence <EoS> as a token as well. If a word is not in our dictionary, conventionally we can map that to unknown token <UNK>.
+To create a language model, we need a large corpus (text body) of text for training. To give it more structure, in a sentence we call each word (also called token) as  $y^{[1]},y^{[2]},\dots,y^{[10]}$ and we can allocate the end of a sentence `<EoS>` as a token as well. If a word is not in our dictionary, conventionally we can map that to unknown token `<UNK>`.
 Consider that we are interested to train a model that gives a score to each sentence. For example, we want to give a score to the sentence:
 
 <p align="center">
-Cats average 15 hours of sleep a day. <EOS>
+Cats average 15 hours of sleep a day. `<EOS>`
 </p>
 
