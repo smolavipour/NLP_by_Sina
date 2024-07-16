@@ -63,3 +63,20 @@ L(\hat{y}, y)=\sum_{t=1}^T L^{[t]} (\hat{y}^{[t]},y^{[t]} )
 \end{align}
 ```
 
+## 4.3 Various Types of RNN
+It is possible that in some applications, the length of input and output are different. For instance, in sentiment classification, we may want to map a text to a score for instance (many-to-one relation). Then the architecture can be:
+
+![](images/2.png)
+
+In another example such as machine translation, the architecture could be:
+
+![](images/3.png)
+
+## 4.4 Language Model
+To create a language model, we need a large corpus (text body) of text for training. To give it more structure, in a sentence we call each word (also called token) as  $y^{[1]},y^{[2]},\dots,y^{[10]}$ and we can allocate the end of a sentence <EoS> as a token as well. If a word is not in our dictionary, conventionally we can map that to unknown token <UNK>.
+Consider that we are interested to train a model that gives a score to each sentence. For example, we want to give a score to the sentence:
+
+<p align="center">
+Cats average 15 hours of sleep a day. <EOS>
+</p>
+
