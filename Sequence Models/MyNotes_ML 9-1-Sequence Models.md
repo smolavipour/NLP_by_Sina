@@ -109,9 +109,17 @@ Let us define the memory as $c^{[t]}$. In RNN, we consider $c^{[t]}=a^{[t]}$.
 For Gated Recurrent Unit (GRU), let us define a variable called candidate memory:
 $\tilde{c}^{[t]}=tanh⁡(W_c [c^{[t-1]},x^{[t]}]+b_c)$
 Then let us define the update gate function as:
-$$\Gamma_u=\sigma⁡(W_u [c^{[t-1]},x^{[t]}]+b_u)$$
+$\Gamma_u=\sigma⁡(W_u [c^{[t-1]},x^{[t]}]+b_u)$
 This gate somehow controls if we need to apply what we have stored in the memory or not. Like in the example above Gate tells us when it is important to care about was/were.
 Then we can define: 
-$c^{[t]}=\Gamma_u *c ̃{[t]}+ 〖(1-\Gamma_u) *c^{[t-1]}$
+$c^=\Gamma_u *\tilde{c}^{[t]}+ 〖(1-\Gamma_u) *c^{[t-1]}$
 The fill GRU has another gate (relevant gate) function $\Gamma_r$. So, the complete formulas become:
 
+```math
+\begin{align}
+c^{[t]}=tanh⁡(W_c[\Gamma_r* c^{[t-1]},x^{[t]}]+b_c )
+\Gamma_u=\sigma⁡(W_u [c^{[t-1]},x^{[t]} ]+b_u )
+\Gamma_r=\sigma⁡(W_r [c^{[t-1]},x^{[t]} ]+b_r )
+c^{[t]}=\Gamma_u  *\tilde{c}^{[t]}+ (1-\Gamma_u) *c^{[t]}
+\end{align}
+```
