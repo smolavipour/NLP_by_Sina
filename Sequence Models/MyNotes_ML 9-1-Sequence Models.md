@@ -340,3 +340,48 @@ BP=min ⁡(1,e^{1-\frac{ref}{cand}})
 ```
 
 And `ref` and `cand` are number of words in the reference and candidate translation. BLEU score is a precision score.
+
+**ROUGE-N Score**
+
+Assume we have multiple references and one candidate translation. For each reference we compute the counts and take the maximum among them. To compute the score for each reference, we start with each word and if the word exists in the reference, we add the counter. Note that we only add the counter for one recall. ROUGE-N score can be assumed as a recall metric.
+One can combine BLEU score and ROUGE-N score to compute a F1 score:
+```math
+\begin{align}
+F1=2\frac{precision \times recall}{precision + recall}
+\end{align}
+```
+
+## 9.2 Image captioning
+Using models such as AlexNet, we can take the last layer to an RNN as the input and generate a sequence of captions. (2014-15)
+
+![image](https://github.com/user-attachments/assets/97043de3-3f08-49c3-b63f-66cccc3c56f0)
+
+## 9.3 Teacher forcing
+While training the model, the translation may make a mistake only for one word. If the training is very sensitive to such mistakes, the training becomes very slow. Instead, we allow the model to make such tiny mistakes and we move on. So, when feeding the outputs to the next stage in the decoder section, we feed the target word instead to help the model proceed.
+What is Teacher Forcing?. A common technique in training… | by Wanshun Wong | Towards Data Science
+
+[A related article](https://towardsdatascience.com/what-is-teacher-forcing-3da6217fed1c)
+
+## 9.4	Attention Model (2014)
+For short sentence translation the method above works fine. But as the length of sentence increases, the performance drops dramatically since in the simple seq2seq model all the information had to be stored in the hidden state between encoder and decoder. One workaround is to add the hidden state from earlier states. However, if store them separately we run out of memory. So, we can combine them by adding values pointwise:
+![image](https://github.com/user-attachments/assets/126f9947-3e62-40ff-ad06-10779488a046)
+
+But this is not optimal. To resolve it, we can use weights and give less weight to hidden states that are more important. In the attention model, we use decoder hidden state to predict the importance weights of the next step. 
+Consider the bidirectional LSTM/RNN model. In the first step, we want to extract features from forward and backward recurrences.
+
+Let us define the features $a^{&lt t^{\'} &gt)=({\overrightarrow{a^{&lt t^{\'} &gt}}, \overleftarrow{a}^{&lt t^{\'} &gt))$. 
+Next, we can define a forward RNN as below where attention parameters $\alpha^{&lt i,j &gt} construct the context variable $C$, where:
+```math
+\begin{align}
+\sum_{t^{\'}} α^{&lt 1,t^{\'} &gt}=1\\
+\alpha^{&lt 1,t^{\'} &gt} \geq 0\\
+C^{&lt 1&gt}=\sum_{t^{\'}} \alpha^{&lt 1,t^{\'} &gt} a^{&lt t^{\'} &gt}
+\end{align}
+```
+
+
+
+
+
+
+
