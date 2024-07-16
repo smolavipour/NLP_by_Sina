@@ -422,4 +422,117 @@ E^*=\arg max_{E\in{candidate set}}⁡ \frac{1}{n} \sum_{E'\in{candidate set}} RO
 \end{align}
 ```
 
+## 9.7 Tricks for training the seq2seq model
+It is difficult to implement a feedback loop to feed in the decoder hidden states back into the attention block in the encoder. Instead, we can use a pre-attention decoder.
+
+![image](https://github.com/user-attachments/assets/a1ada823-23ab-4715-8699-fd5e9dc54164)
+
+To implement this, we concatenate the input sequence tokens and pre-attention decoder containing target sequence and make a shift right and add `<SOS>` to it. Since we use the target vectors for the pre-attention decoder, it means we are using teacher forcing.
+The hidden states from encoder is used for both key and value, while the hidden states from the pre-decoder is used as the query in the attention model. Then the context vector is constructed and is fed into the decoder to predict the sequence.
+To handle the padding mask, we make a copy of input and target, and use it to determine the paddings before the attention layer is computed. Note that the mask is used to avoid using padding tokens impact computing the probabilities.
+
+![image](https://github.com/user-attachments/assets/f7be0676-ea74-43e5-894a-5e6f0e766542)
+
+Then the context vector is computed and is passed to the decoder to compute the predictions. We use the copy of target for comparison. Note that the mask is discarded before feeding into the decoder. To evaluate the performance, we use BLEU score.
+
+![image](https://github.com/user-attachments/assets/e21e5a05-021d-4d2b-adaa-d7035e7d416a)
+
+The attention block may contain several dense layers which increases the risk of vanishing gradient. To overcome this, we can use a residual network.
+
+![image](https://github.com/user-attachments/assets/4f727b87-3995-41b1-a788-37121d969ef9)
+
+In the implementation of the Attention model, a dense layer is added before and after the attention head and we parallelize and concatenate the outputs according to the structure below:
+
+![image](https://github.com/user-attachments/assets/cbff20d9-9780-4597-b9fd-9fdd70243cb5)
+
+For clarity, note that the parameters that we train are the weights of dense layers and similar to the LSTM block (which is parametrized by the number of units), it does not matter how lengthy is the input. Every token is passed through same block of LSTM and attention is applied when all tokens of an input is passed through the linear layer.
+
+# 10 Transformer
+As the models from RNN to LSTM become more complex, it also increases the complexity of learning them. The structure of these models enforces us to compute one input before being able to operate on the next one. Transformer models are introduced to enable us to parallelize part of computations and reduce complexity accordingly. It utilizes attention mechanism and CNN jointly.
+A transformer block consists of an attention layer and a one feedforward hidden layer.
+
+## 10.1 Self-Attention
+Consider inputs $x_1 \dot x_N$ each vector of dimension d. The attention layer at core is a linear combination of $x_i$s. Then with attention matrix $A$ the outputs are $Z=A^T X$. The limitation for $A\inR^{N×N}$ is that the rows of $A^T$ are normalized having values in $[0,1]$ and sum to 1. The matrix is not fixed size as the input length N can vary. We can perform the normalization row-wise using softmax function, so:
+$Z=softmax(B)$, $X=A^T X$
+
+Looking at element $a_ij$ of the attention matrix, we refer to the output $z_i$ as query and the $x_j$ as the key. In self-attention, we want to know how much each words are contributing in the context to their own. So it makes sense to construct matrix $B$ using $\frac{1}{\sqrt{d} XX^T}. However, this gives a high bias towards diagonal.
+
+![image](https://github.com/user-attachments/assets/552d3b81-ee35-4931-999e-bcd0ea88e1d4)
+
+This is not helpful in the transformer since gives weight only to self-tokens. Instead, we multiply matrices $W_Q$, $W_K$ to obtain $Q=X W_Q$ and $K=$XW_K$ to get query and key matrices. $W_Q$  $W_K$ are learnable during training.
+
+The goal is to compute for each word an attention-based vector representation denoted by $A(q,K,V)$ where $q$ is the query, $K$ is key (quality of word given the query) and $V$ is value (specific representation of the word given the query). In self-attention queries and keys come from the same sentence and the goal is to capture a meaning for each word within the sentence. To give an intuition consider the sentence:
+
+<p align=center>
+	“Jane is visiting Africa in September.”
+</p>
+
+Then for the word “Africa”, query represents a question like “What is happening there?” and the key represents an answer to that question (e.g. “Visiting”). So when $q^{&lt 4 &gt}$. $k^{&lt 3 &gt}$ gets a high value which means these words are relevant to a context. So instead, if treating “Africa” as a single word, it is treating it finds the representation of that as a destination to visit called Africa. The key and value can be seen as a lookup table and we align queries with keys using alignment scores (see $q.k^{&lt i &gt}$ in the formula below). Then we can use alignment scores to compute weights for the weighted sum of the attention model using value vectors.
+So, for example for word $x^{&lt 3 &gt}$ we have the representation $A^{&lt 3 &gt}$ where it encapsulates the context as well by looking at the other words around $x^{&lt 3 &gt}$. This is done by computing the representations as:
+```math
+\begin{align}
+A(q,K,V)= \sum_i \frac{exp⁡(q.k^{&lt i &gt}}/{\sum_j exp⁡(q.k^{&lt i &gt} ) v^{&lt i &gt} 
+\end{align}
+```
+where
+
+```math
+\begin{align}
+q^{&lt i &gt}&=W^Q.x^{&lt i &gt}\\
+k^{&lt i &gt}&=W^k.x^{&lt i &gt}\\
+v^{&lt i &gt}&=W^V.x^{&lt i &gt}
+\end{align}
+```
+
+![image](https://github.com/user-attachments/assets/fb11465b-d7ec-444c-b43c-0db4c22609ac)
+
+In matrix form one can only write:
+```math
+\begin{align}
+Attention(Q,K,V)=softmax(\frac{QK^T}{\sqrt{d_k}})V
+\end{align}
+```
+
+![image](https://github.com/user-attachments/assets/84248693-728b-4564-b1a3-b917437d7ace)
+
+**Padding**
+
+**Padding Mask**: The length of the sequence is limited and should be the same for all inputs. So we truncate lengthy sentences and pad the short ones. So when we index the words and vectorize them, we can pad them with zeros. However, for softmax, these zeros are problematic. We can build a Boolean masking matrix that tells us which elements we should choose and later force these values to -1e9 to make sure they do not account in the softmax output in the attention blocks. For example, in a causal attention, we don’t want queries to attend to future, so we choose M to be an upper triangular matrix.
+```math
+\begin{align}
+Attention(Q,K,V)=softmax(\frac{QK^T}{\sqrt{d_k}}+M)V
+\end{align}
+```
+
+Where $M$ is the mask matrix with -1e9 values for padded elements and zero otherwise.
+
+**Look-Ahead Mask**: This masking pretends that the model has predicted correctly part of the output and checks if it can correctly predict the next word and after.
+
+## 10.2 Multi-head Attention
+Intuitively, we allow the model to learn multiple questions and answers for each word. To implement this for “question-1” consider three matrices: $W_1^Q, W_1^K, W_1^V$, then we build a new set for “question-2”. In the multi-head attention setup, we have h heads. Then for each attention head we compute the value of $Attention(W_i^Q Q,W_i^K K,W_i^V V)$. By concatenation of these heads and multiplying by a matrix $W_o$, we can compute the final attentions:
+$Multihead(Q,K,V)=concat(head_1,…,head_h ) W_o$
+
+Note that this operation can be done in parallel which makes t appealing for GPUs. Also note that in the setup bellow, if q,k,v are the same, then this boils down to self-attention
+
+![image](https://github.com/user-attachments/assets/dbb5ba64-ba8e-4d9a-b264-4161992483ad)
+
+Below is a suggestion for matrix sizes:
+![image](https://github.com/user-attachments/assets/4677951e-1d30-4d39-a79e-c609338c4e35)
+
+In the transformer model, we add the positional encoding to keep track of order of tokens.
+
+## 10.3 Transformer Decoder model
+This structure is also known as GPT-2. It uses the input to predict the next word, for instance it can be used for the application of text summarization. 
+ 
+Note that the output is a likelihood on the next word. So in the inference to summarize `[Article]<EOS>[Summary]<EOS>`, we provide `[Article]<EOS>` to predict the first word of Summary. Then we give the first predicted word of summary to predict next one and so on. We can use a cross entropy loss to compare the predicted summary and real summary as:
+```math
+\begin{align}
+J=-\frac{1}{m} \sum_{i over Summary} \sum_{j over betch elements} y_j^i  \log⁡ \hat{y}_j^i
+\end{align}
+```
+
+
+
+
+
 
