@@ -736,18 +736,18 @@ x_1&=y_1-Attention(x_2)
 ```
 
 # 18 References
-- Coursera Specialization course for seqence models
+- Coursera Specialization course for seqence models (by DeepLearning.AI)
+- Natural Language Processing Specialization (by DeepLearning.AI)
 - Minimal character-level language model with a Vanilla Recurrent Neural Network, in Python/numpy (GitHub: karpathy) [link](https://gist.github.com/karpathy/d4dee566867f8291f086)
 - The Unreasonable Effectiveness of Recurrent Neural Networks (Andrej Karpathy blog, 2015) [link](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
-- deepjazz (GitHub: jisungk)
-- Learning Jazz Grammars (Gillick, Tang & Keller, 2010)
-- A Grammatical Approach to Automatic Improvisation (Keller & Morrison, 2007)
-- Surprising Harmonies (Pachet, 1999)
-- Man is to Computer Programmer as Woman is to Homemaker? Debiasing Word Embeddings (Bolukbasi, Chang, Zou, Saligrama & Kalai, 2016)
-- GloVe: Global Vectors for Word Representation (Pennington, Socher & Manning, 2014)
-- Woebot.
-- Natural Language Processing Specialization (by DeepLearning.AI)
-- Attention Is All You Need (Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez, Kaiser & Polosukhin, 2017)
-- “Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer” 1910.10683.pdf (arxiv.org)
+- [deepjazz (GitHub: jisungk)](https://github.com/jisungk/deepjazz) 
+- [Learning Jazz Grammars (Gillick, Tang & Keller, 2010)](http://ai.stanford.edu/~kdtang/papers/smc09-jazzgrammar.pdf)
+- A Grammatical Approach to Automatic Improvisation (Keller & Morrison, 2007) [link](http://smc07.uoa.gr/SMC07 Proceedings/SMC07 Paper 55.pdf)
+- [Surprising Harmonies (Pachet, 1999)](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.5.7473&rep=rep1&type=pdf)
+- Man is to Computer Programmer as Woman is to Homemaker? Debiasing Word Embeddings (Bolukbasi, Chang, Zou, Saligrama & Kalai, 2016) [Link](https://papers.nips.cc/paper/2016/file/a486cd07e4ac3d270571622f4f316ec5-Paper.pdf)
+- GloVe: Global Vectors for Word Representation (Pennington, Socher & Manning, 2014) [Link](https://nlp.stanford.edu/projects/glove/)
+- [Woebot](https://woebothealth.com/)
+- Attention Is All You Need (Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez, Kaiser & Polosukhin, 2017) [Link](https://arxiv.org/abs/1706.03762)
+- “Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer” 1910.10683.pdf (arxiv.org) [Link](https://arxiv.org/pdf/1910.10683.pdf)
 
 
