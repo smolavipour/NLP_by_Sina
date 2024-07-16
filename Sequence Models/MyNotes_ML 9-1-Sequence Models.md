@@ -58,8 +58,8 @@ To simplify the notation, we can concatenate $w_{aa}$ and $w_{ax}$ and refer to 
 Let us define the loss function as:
 ```math
 \begin{align}
-L^{[t]} (\hat{y}^{[t]},y^{[t]})=-y^{[t]}  log⁡(\hat{y}^{[t]})- 〖(1-y^{[t]})log⁡(1-\hat{y}^{[t]})\\
-L(\hat{y}, y)=\sum_{t=1}^T L^(<t>) (\hat{y}^{[t]},y^{[t]} )
+L^{[t]} (\hat{y}^{[t]},y^{[t]})=-y^{[t]}  log⁡(\hat{y}^{[t]})- (1-y^{[t]})log⁡(1-\hat{y}^{[t]})\\
+L(\hat{y}, y)=\sum_{t=1}^T L^{[t]} (\hat{y}^{[t]},y^{[t]} )
 \end{align}
 ```
 
