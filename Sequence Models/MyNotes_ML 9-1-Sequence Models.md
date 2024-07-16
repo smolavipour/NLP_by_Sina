@@ -176,7 +176,11 @@ It answers to questions such: the relation between `Man->Woman` is similar to th
 The conventional way is to compare the embedding vector using proper distance metrics. In t-SNE, due to non-linearities one should not expect to identify analogies, especially complicated parallel relationships as below:
 
 One typical distance metric is cosine similarity which is basically:
-$similarity={u^T v}/{\lvert\lvert u\rvert\rvert_2  \lvert\lvert v\rvert\rvert_2}$
+```math
+\begin{equation}
+similarity={u^T v}/{\lvert\lvert u\rvert\rvert_2  \lvert\lvert v\rvert\rvert_2}$
+\end{equation}
+```
 
 ![](images/9.png)
 
