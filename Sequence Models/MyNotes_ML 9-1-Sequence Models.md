@@ -379,6 +379,7 @@ C^{&lt 1&gt}=\sum_{t'} \alpha^{&lt 1,t' &gt} a^{&lt t' &gt}
 \end{align}
 ```
 
+![image](https://github.com/user-attachments/assets/081338ef-c10b-4cf9-8976-4bbf6e3bee1c)
 
 
 
