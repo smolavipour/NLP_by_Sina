@@ -574,5 +574,180 @@ Transformer addresses all three problems above. The model is not handling inform
 ![image](https://github.com/user-attachments/assets/6c43d4ea-b643-4720-a1a0-e7f99c4310bc)
   * It uses same model to perform all tasks and only the input determines which task is intended.
 
+# 11 Transfer Learning
+In NLP area, since the models are very huge and pre-trained on huge datasets (Wikipedia English ~14GB, C4 800 GB), it is more convenient to use the pre-trained model, adapt it to the new use case and run a few more training epochs (fine-tuning) for the new downstream task. Transfer learning can be performed in two ways:
+- Feature-based: We store features learned from a previous training (e.g., word2vec embeddings). An  example is ELMo where a contextual representation is built for every token using concatenation of left-to-right and right-to-left representations.
+  ![image](https://github.com/user-attachments/assets/fcc23766-168b-4d02-9e50-e71e776689fd)
+
+- Fine-tuning: We use a pre-trained model and use the weights for a new task by adding minimal task-specific parameters and train all parameters for the downstream task (e.g., GPT). The tasks that have been used for pre-training a language model can be predicting masked words, or next sentence.
+![image](https://github.com/user-attachments/assets/04a3c25b-6561-4010-a2ec-f635a7ecfbea)
+
+# GPT (Generative Pre-trained Transformers)
+It uses stacks of decoder blocks from the transformer model, so given a sequence of tokens, it generates the next token. In practice, it generates the output sequence until it reaches to the stop token. GPT architecture uses unidirectional structure meaning that every token can attend only to its previous tokens in the self-attention layer. The left-context-only version is often referred to as Transformer decoder. 
+For pre-training, given every sequence of tokens u_1,…,u_n, the model predicts the next token and the objective function is defined as:
+```math
+\begin{align}
+L_1(U) = \sum_i \log P(u_i|u_{i-k},\dots,u_{i-1};\Theta)
+\end{align}
+```
+After pre-training, they fine-tune the model on classifying a task (such as classification, entailment, similarity, Q&A, multiple-choice). So a labeled dataset C is provided and the objective is:
+```math
+\begin{align}
+L_2(C) = \sum_{(x,y)} \log P(y|x^1,\dots,x^m)
+\end{align}
+```
+Where  
+```math
+\begin{align}
+\log P(y|x^1,\dots,x^m) = softmax(h_l^m W_y)
+\end{align}
+```
+
+# 13 BERT (Bi-directional Encoder Representation from Transformers)- 2019
+It is designed to provide deep bidirectional representation for text input. Then the model can be fine-tuned for other tasks by adding one additional layer on the output. For example, question and answering, language inference. 
+BERT uses bidirectional transformer (i.e., Transformer Encoder). Transformer model is able to learn the language context in two “separate” blocks of encoder and decoder. As a result, it enables us to use the encoder separately to build language models that understand context, language, grammar and meaning. This is the idea behind BERT. In short is a stack of encoders:
+
+![image](https://github.com/user-attachments/assets/25d96de2-f146-408d-972f-c8d3b236db8f)
+
+It leverages from
+- Transformers model which is using self-attention mechanism
+- It is bidirectional.
+
+BERT uses the concept of transfer learning. First it is pre-trained on two tasks and then the model is fine-tuned.
+
+## 13.1 Pre-training
+This is done by two objectives. It is relatively expensive procedure in terms of computation. Using 16 TPUs BERT_Base takes 4 days to train. We should note that attention is quadratic to the sequence length.
+
+**Masked Language Model (MLM)**
+This objective enables the model to pre-train with a bi-directional attention structure. In previous methods they could train a transformer model using either left-to-right or right-to-left. In ELMo they perform both and finally concatenate both representations. But the difference in BERT is that in each layer of transformer, it uses bidirectional structure (transformer-encoder) and they introduced randomly masking tokens to prevent a token to “see itself”. Without masking, since the architecture is multi-layer, in layer 2 for every token has some information about itself using the output of other tokens in the previous layer.
+
+In this task, we give the model sentences with masked words and the model should be able to predict masked words. The strategy is to mask 15% of the words at random. With 80% probability we use the <mask> token, and 10% we use a random token and 10% we choose the original token. Then we use the cross-entropy loss.
+
+The reason for not having all masked token be <mask> is that during fine-tuning such tokens won’t exist and the model’s performance would be low. Having intact tokens when masking is justified because we want the model to learn the true context representation as well. On the other hand, random tokens try to show the model that it fails if it uses wrong token in the context. Since the percentage of such occurrences is very low, it is not hampering the performance much.
+
+**Next Sentence Prediction (NSP)**
+
+In this task, we give sentence A and B to the model and see if sentence B follows sentence A or not. The loss function is a binary loss.
+This process is slow.
+![image](https://github.com/user-attachments/assets/1f8f35c7-dd8f-4742-9138-9cdd61113089)
+
+In practice these tasks are performed simultaneously and we add the loss functions. So, we input the model two sentence with maksed words. The output C then represents the binary classification whether Sentence B follows sentence A or not (NSP task). Es are embeddings and T are word vectors which is used for MLM task. 
+The embeddings are in fact constructed from 3 different embeddings:
+- Token Embedding: Uses an embedding like WordPieces which consists of 30k vocab)
+![image](https://github.com/user-attachments/assets/85d7dd47-66d2-41f8-9bd4-a8a739a6e16e)
+- Segment Embedding: indicates the sentence 
+ ![image](https://github.com/user-attachments/assets/b2cc37e5-36ba-490f-bc7e-786d458011f5)
+- Position Embedding:
+ ![image](https://github.com/user-attachments/assets/96215faf-ad86-4465-ace1-ce4bdb989480)
+
+The word vectors $T_i$ have the same size and are generated simultaneously. To define the loss function, we pass the output through a fully connected layer with output dimension 30k and Softmax activation. Then we can compare this likelihood vector with a one-hot code using the true sentence and compute cross entropy loss. In this computation we only consider the prediction for masked words and ignoring the other values.
+![image](https://github.com/user-attachments/assets/86714052-c73c-4aee-bb6b-6650525c2ebd)
+
+BERT_base model contains 12 layers and 12 attention heads with 110 million parameters. 
+
+## 13.2 Fine tuning
+We can fine tune BERT models with a more specific language task, for instance Q&A. So, we can replace the output layer with a fresh set and train the weights of the last layer while very slightly changing the weights of the rest (or maybe even fix them?!). Then the BERT model receives a question and a passage and marks the output with start and end of span of text that has the answer. So the objective is how accurate the start an end are predicted. We can train this using a Q&A dataset. This process is fast and can be done in about 1h Google cloud TPU (Tensor Processing Unit) or few hours GPU.
+![image](https://github.com/user-attachments/assets/7ac6743e-8383-41df-a460-b3a52d18c77e)
+
+In practice, this can be done by giving the `[question<SEP>passage]` and mark the start and end in the output word vectors that covers the answer. 
+![image](https://github.com/user-attachments/assets/6447c575-8074-423e-9cb0-8317875165e2)
+
+BERT was initially released in two models: BERT_base with 110M parameters and BERT_large with 340M parameters.
+
+# 14 T5 model
+This model (220 million parameters) can be used for tasks:
+- Classification
+- Q&A
+- Machine Translation
+- Summarization
+- Sentiment analysis
+See the paper [“Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer”](https://arxiv.org/pdf/1910.10683.pdf).
+In the model, we have a fully visible masking encoder (not caual) and it contains a causal decoder.
+![image](https://github.com/user-attachments/assets/671a7b9c-8648-45db-8853-09c49c95786d)
+The model includes a language model with causal links and a Prefix model with mixed fully visible and causal links:
+![image](https://github.com/user-attachments/assets/e028f31f-ef27-4620-8e34-b3c3681e86d5)
+
+## 14.1 Multi-task training strategies
+To train one model on multiple tasks, we can use tags to identify which task we are intended.
+
+**Data sampling**
+
+We can either use proportional mixing (taking a fixed percentage of different data sets), or we can fix the final sample size taken from each dataset. 
+
+**Training phase**
+
+We can use gradual unfreezing, meaning that at every step of training, we only unfreeze part on layer and the rest are fixed.
+Adaptive layer is also another concept where we add feed-froward neural networks to adapt the output size to the input and during the fine tuning, we can only learn those parameters.
+
+# 15 LLM downstream tasks
+## 15.1 Named Entry Recognition NER
+In many applications we need to make a differentiation between the names and other words in the document. 
+![image](https://github.com/user-attachments/assets/9e25a342-87d2-4162-be18-5ba839725dc0)
+
+## 15.2	Question Answer
+Question answering (QA) is a task of natural language processing that aims to automatically answer questions. The goal of extractive QA is to identify the portion of the text that contains the answer to a question. For example, when tasked with answering the question 'When will Jane go to Africa?' given the text data 'Jane visits Africa in September', the question answering model will highlight 'September'.
+
+For this purpose, there is a good dataset called “bAbI” developed by Facebook.
+[https://research.facebook.com/downloads/babi/](https://research.facebook.com/downloads/babi/)
+
+# 16 LLM evaluation
+## 16.1 GLUE General Language Understanding Evaluation
+It is a benchmark to evaluate the performance of a language model. It is a collection of train, evaluate, and analyze natural language understanding systems. It has different datasets of different sizes.
+
+# 17 Reformer model (Long Sequence handling)
+Reformer model is a modification on transformer model to handle long text inputs and save memory issues. The model uses:
+- Local sensitivity hashing (LSH) to efficiently compute attention values
+- Reversible residual layers to better use the memory
+
+When dealing with use cases like writing a book or chatbot, we need to be able to handle long sequences. The problem is that we run out of memory.
+- Attention on a sequence of length $L$ takes $L^2$ time and memory (since we are comparing words with each other)
+- $N$ layers takes $N$ times as much memory (GPT-3 has 96 layers)
+
+The attention inputs $Q,K,V$ are of dimension $[L,d_model ]$. Note that $Attention=softmax(QK^T)V$ and $QK^T$ is $[L,L]$. We may not need to consider all $L^2$ values and we can save memory by computing only part of these multiplications. Activations need to be stored for backpropagation which takes a lot of memory. So instead, we can re-compute them.
+
+## 17.1 Parallel computing using LSH
+The trick is to use local sensitivity hashing. In computing attention, we want to find $q$ and $k$ to be close. Instead of the inner product, we can bucket them, use local sensitivity hashing. This also allows us to parallelize the process.
+![image](https://github.com/user-attachments/assets/44c57c04-e7ed-45ed-8a03-b9848c228dc7)
+
+![image](https://github.com/user-attachments/assets/4607c5c7-07be-4780-a704-8332e47efee8)
+
+![image](https://github.com/user-attachments/assets/72b35fb8-5596-4f79-a739-f2ec1d277cce)
+
+![image](https://github.com/user-attachments/assets/3ef6f414-16c0-4535-993c-4131daee9949)
+
+## 17.2 Memory saving in back propagation (Reversible residual layer)
+In a simple transformer model, we have residual links that in backpropagation, we need to store the value to compute the backpropagation by subtracting them.
+ 
+Instead, we can compute the residuals again in backpropagation to mitigate the memory issue. The trick is the architecture below that at each iteration we update only one of the values in columns:
+ 
+```math
+\begin{align}
+y_1&=x_1+Attention(x_2)\\
+y_2=&x_2+feedforward(y_1)
+\end{align}
+```
+
+So we save $y_1$ and $y_2$ only and we don’t need to store the activation outputs. Then to recompute $x_1$ and $x_2$:
+```math
+\begin{align}
+x_2&=y_2-Feedforward(y_1)\\
+x_1&=y_1-Attention(x_2)
+\end{align}
+```
+
+# 18 References
+- Coursera Specialization course for seqence models
+- Minimal character-level language model with a Vanilla Recurrent Neural Network, in Python/numpy (GitHub: karpathy) [link](https://gist.github.com/karpathy/d4dee566867f8291f086)
+- The Unreasonable Effectiveness of Recurrent Neural Networks (Andrej Karpathy blog, 2015) [link](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)
+- deepjazz (GitHub: jisungk)
+- Learning Jazz Grammars (Gillick, Tang & Keller, 2010)
+- A Grammatical Approach to Automatic Improvisation (Keller & Morrison, 2007)
+- Surprising Harmonies (Pachet, 1999)
+- Man is to Computer Programmer as Woman is to Homemaker? Debiasing Word Embeddings (Bolukbasi, Chang, Zou, Saligrama & Kalai, 2016)
+- GloVe: Global Vectors for Word Representation (Pennington, Socher & Manning, 2014)
+- Woebot.
+- Natural Language Processing Specialization (by DeepLearning.AI)
+- Attention Is All You Need (Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez, Kaiser & Polosukhin, 2017)
+- “Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer” 1910.10683.pdf (arxiv.org)
 
 
