@@ -120,11 +120,29 @@ The fill GRU has another gate (relevant gate) function $\Gamma_r$. So, the compl
 c^{[t]}&=tanh⁡(W_c[\Gamma_r* c^{[t-1]},x^{[t]}]+b_c )\\
 \Gamma_u&=\sigma⁡(W_u [c^{[t-1]},x^{[t]} ]+b_u )\\
 \Gamma_r&=\sigma⁡(W_r [c^{[t-1]},x^{[t]} ]+b_r )\\
-c^{[t]}&=\Gamma_u  *\tilde{c}^{[t]}+ (1-\Gamma_u) *c^{[t]}
+c^{[t]}&=\Gamma_u  *\tilde{c}^{[t]}+ (1-\Gamma_u) *c^{[t-1]}
 \end{align}
 ```
 
 In academic literature, people may use the following literature:
 $\tilde{c}=\tilde{h}, \Gamma_u=u, \Gamma_r=r, c=h$
 
+![](images/5.png)
+
+## 4.7 Long Short-Term Memory (LSTM)
+It contains of the following gates: Update, Forget, Output.
+
+![](images/6.png)
+
+```math
+\begin{align}
+c^{[t]}&=tanh⁡(W_c[\Gamma_r*a^{[t-1]},x^{[t]}]+b_c )\\
+\Gamma_u&=\sigma⁡(W_u [a^{[t-1]},x^{[t]} ]+b_u )\\
+\Gamma_r&=\sigma⁡(W_r [a^{[t-1]},x^{[t]} ]+b_r )\\
+\Gamma_o&=\sigma⁡(W_o [a^{[t-1]},x^{[t]} ]+b_o )\\
+c^{[t]}&=\Gamma_u*\tilde{c}^{[t]}+ (1-\Gamma_u) *c^{[t-1]}\\
+a^{[t]}&=\Gamma_o *tanh⁡(c^{[t]})
+\end{align}
+```
+Forget gate decides what information is keep or discarded. Input gate decides what information to be added in the cell state. 
 
