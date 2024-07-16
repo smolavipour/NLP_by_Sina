@@ -452,7 +452,7 @@ As the models from RNN to LSTM become more complex, it also increases the comple
 A transformer block consists of an attention layer and a one feedforward hidden layer.
 
 ## 10.1 Self-Attention
-Consider inputs $x_1 \dot x_N$ each vector of dimension d. The attention layer at core is a linear combination of $x_i$s. Then with attention matrix $A$ the outputs are $Z=A^T X$. The limitation for $A\inR^{N×N}$ is that the rows of $A^T$ are normalized having values in $[0,1]$ and sum to 1. The matrix is not fixed size as the input length N can vary. We can perform the normalization row-wise using softmax function, so:
+Consider inputs $x_1 \dot x_N$ each vector of dimension d. The attention layer at core is a linear combination of $x_i$ s. Then with attention matrix $A$ the outputs are $Z=A^T X$. The limitation for $A\in R^{N×N}$ is that the rows of $A^T$ are normalized having values in $[0,1]$ and sum to 1. The matrix is not fixed size as the input length N can vary. We can perform the normalization row-wise using softmax function, so:
 $Z=softmax(B)$, $X=A^T X$
 
 Looking at element $a_ij$ of the attention matrix, we refer to the output $z_i$ as query and the $x_j$ as the key. In self-attention, we want to know how much each words are contributing in the context to their own. So it makes sense to construct matrix $B$ using $\frac{1}{\sqrt{d} XX^T}. However, this gives a high bias towards diagonal.
