@@ -11,9 +11,7 @@ This repository contains my notes and codes from my self study and courses in Co
 
 # Small projects
 ## Stock market chatbot
-```diff
-+ text in green
-```
+$${\color{red}Red}$$
 
 This project is a chatbot that understands human input and answers and plots appropriate results. 
 
