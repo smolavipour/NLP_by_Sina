@@ -43,9 +43,9 @@ user_query = None
 
 
 
-c1,c2 = st.columns([6,4],gap="large")
+c1,c2 = st.columns([6,1],gap="large")
 with c1:
-    conversation_box = st.container(height=600)
+    conversation_box = st.container(height=1000)
     if conversation_mode:
         for message in st.session_state.chat_history:
             if isinstance(message, HumanMessage):
@@ -55,7 +55,7 @@ with c1:
             elif isinstance(message, tuple):
                 fig_chart,_ = message
                 with conversation_box:
-                    c_1,c_2,c_3 = st.columns([2,4,2],gap="large")
+                    c_1,c_2,c_3 = st.columns([1,1,1],gap="large")
                     with c_2:
                         st.pyplot(fig_chart)
     
@@ -80,7 +80,7 @@ with c1:
             st.session_state.chat_history.append((fig_chart, ax_chart))
             try:
                 with conversation_box:
-                    c_1,c_2,c_3 = st.columns([2,4,2],gap="large")
+                    c_1,c_2,c_3 = st.columns([1,1,1],gap="large")
                     with c_2:
                         st.pyplot(fig_chart)
             except Exception as e:
@@ -89,7 +89,7 @@ with c1:
         except Exception as e:
             print(f"An error occurred: {e}")
         
-with st.sidebar:
+with c2:
     with stylable_container(
                             "green",
                             css_styles="""
