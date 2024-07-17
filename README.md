@@ -11,7 +11,7 @@ This repository contains my notes and codes from my self study and courses in Co
 
 # Small projects
 ## Stock market chatbot
-![#c5f015](saasa) `#c5f015`
+![#f03c15](https://placehold.co/15x15/f03c15/f03c15.png) `#f03c15`
 
 This project is a chatbot that understands human input and answers and plots appropriate results. 
 
