@@ -16,7 +16,7 @@ This project is a chatbot that understands human input and answers and plots app
 
 [Link to the project](LLM_GenAI/StockmarketBot)
 
-In this project we leverage <code style='color: yellow;'>Lngchain</code> and **Huggingface** endpoints to run LLMs. 
+In this project we leverage <code style='color: Gold;'>Langchain</code> and **Huggingface** endpoints to run LLMs. 
 The task is broken down into multiple chains and agents to pick up relevant data. Then **yfinance** API is used to read stock market historical data.
 
 This is an ongoing project!
