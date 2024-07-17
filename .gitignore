@@ -1,0 +1,8 @@
+.vscode
+
+LLM_GenAI\StockmarketBot\App\.env
+
+LLM_GenAI\StockmarketBot\Input_handler\__pycache__\
+LLM_GenAI\StockmarketBot\Input_handler\.env
+LLM_GenAI\StockmarketBot\Input_handler\NLP_by_Sina.code-workspace
+LLM_GenAI\StockmarketBot\Input_handler\*.ipynb
