@@ -67,16 +67,14 @@ with c1:
         conversation_history = "\n".join([a.pretty_repr() for a in st.session_state.chat_history if not isinstance(a,tuple)])
         st.session_state.chat_history.append(HumanMessage(user_query))
         
-        response = input_handler_model_obj.chain_company_names.invoke(user_query)   
+        response = input_handler_model_obj.data_ingestion({"question":user_query})   
         
         input_handler_response = "The query is created."
         conversation_box.chat_message("AI").write(input_handler_response)
         st.session_state.chat_history.append(AIMessage(input_handler_response))
         
         try:
-            ticker_names = parse_names(response)
-            print(ticker_names)
-            fig_chart, ax_chart, _ = plot_chart(ticker_names)
+            fig_chart, ax_chart, _ = plot_chart(response)
             st.session_state.chat_history.append((fig_chart, ax_chart))
             try:
                 with conversation_box:
