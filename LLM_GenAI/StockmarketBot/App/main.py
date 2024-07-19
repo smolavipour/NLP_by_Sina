@@ -1,7 +1,4 @@
 import streamlit as st
-from streamlit_extras.stylable_container import stylable_container
-
-from streamlit_extras.stylable_container import stylable_container
 import sys
 import json
 sys.path.append('../')
@@ -88,16 +85,8 @@ with c1:
             print(f"An error occurred: {e}")
         
 with c2:
-    with stylable_container(
-                            "green",
-                            css_styles="""
-                            button {
-                                background-color: #00FF00;
-                                color: black;
-                            }""",):
-    
-        if st.button("Clean chat 🧹"):
-            st.session_state.chat_history=[]
+    if st.button("Clean chat 🧹"):
+        st.session_state.chat_history=[]
 
 
 
