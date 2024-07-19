@@ -13,7 +13,7 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 
 
-os.chdir('C:/Users/esinmol/Documents/sina/NLP_by_Sina/LLM_GenAI/StockmarketBot/Input_handler')
+#os.chdir('C:/Users/esinmol/Documents/sina/NLP_by_Sina/LLM_GenAI/StockmarketBot/Input_handler')
 #dotenv.load_dotenv()
 
 def parse_names(message: str) -> list[dict]:
