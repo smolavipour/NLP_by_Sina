@@ -1,7 +1,7 @@
 import streamlit as st
 import sys
 import json
-sys.path.append('../')
+sys.path.append('./')
 
 from Input_handler import input_handler_model
 from Input_handler.input_handler_model import plot_chart, parse_names
