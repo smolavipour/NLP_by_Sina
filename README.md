@@ -12,7 +12,7 @@ This repository contains my notes and codes from my self study and courses in Co
 # Small projects
 ## Stock market chatbot
 
-This project is a chatbot that understands human input and answers and plots appropriate results. 
+This project is a chatbot that understands human input and answers and plots appropriate results. The chatbot is deployed on Streamlit Cloud Community [Stockmarket Bot](https://cswmz2lwfvxjgn8rywfmnz.streamlit.app)
 
 [Link to the project](LLM_GenAI/StockmarketBot)
 
