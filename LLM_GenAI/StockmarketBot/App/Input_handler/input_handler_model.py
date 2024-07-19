@@ -1,4 +1,4 @@
-#import dotenv
+import dotenv
 import os
 import re
 import json
@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 
 #os.chdir('C:/Users/esinmol/Documents/sina/NLP_by_Sina/LLM_GenAI/StockmarketBot/Input_handler')
-#dotenv.load_dotenv()
+dotenv.load_dotenv()
 
 def parse_names(message: str) -> list[dict]:
     # Define the regular expression pattern to match JSON blocks

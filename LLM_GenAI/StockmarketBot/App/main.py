@@ -9,10 +9,10 @@ from Input_handler.input_handler_model import plot_chart, parse_names
 
 from langchain_core.messages import HumanMessage, AIMessage
 
-#import dotenv
+import dotenv
 import os
 
-#dotenv.load_dotenv()
+dotenv.load_dotenv()
 
 st.set_page_config(layout="wide")
 
